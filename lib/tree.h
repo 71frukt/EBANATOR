@@ -68,12 +68,15 @@ node_t         *TreeAddLeaf(tree_t *tree, node_t *father, SonDir_t dir);
 // debug
 void  TreeAssert   (tree_t *tree, const char *file, int line, const char *func);
 int   TreeVerify   (tree_t *tree);
+void  TreeDump     (tree_t *tree, const char *file, int line, const char *func);
 void  PrintTreeErr (int error);
 char *GetFilePath  (const char *name, const char *folder, char *path);
 
 // graph
-void DrawGraph      (tree_t *tree);
-void InitNodesInDot (tree_t *tree, FILE *dot_file);
-void MakeLinksInDot (tree_t *tree, FILE *dot_file);
+void  DrawGraph        (tree_t *tree);
+void  InitNodesInDot   (tree_t *tree, FILE *dot_file);
+void  MakeLinksInDot   (tree_t *tree, FILE *dot_file);
+void  MakeGraphPicture (const char *dotfile_path, const char *picture_path);
+FILE *OpenLogFile      (const char *logfile_name);
 
 #endif

@@ -1,10 +1,16 @@
 digraph G{           
 bgcolor = "#FFF3D1";  
 node_0 [shape = "record", label = "{DATA# | { <left> PTR# | <right> right } }"]
-node_1 [shape = "record", label = "{123 | { <left> PTR# | <right> right } }"]
-node_2 [shape = "record", label = "{DATA# | { <left> PTR# | <right> right } }"]
-node_3 [shape = "record", label = "{DATA# | { <left> PTR# | <right> PTR# } }"]
+node_1 [shape = "record", label = "{123 | { <left> left | <right> right } }"]
+node_2 [shape = "record", label = "{456 | { <left> left | <right> right } }"]
+node_3 [shape = "record", label = "{789 | { <left> left | <right> PTR# } }"]
+node_4 [shape = "record", label = "{DATA# | { <left> PTR# | <right> PTR# } }"]
+node_5 [shape = "record", label = "{DATA# | { <left> PTR# | <right> PTR# } }"]
+node_6 [shape = "record", label = "{DATA# | { <left> PTR# | <right> PTR# } }"]
 node_0: <right> -> node_1
+node_1: <left> -> node_4
 node_1: <right> -> node_2
+node_2: <left> -> node_5
 node_2: <right> -> node_3
+node_3: <left> -> node_6
 } 

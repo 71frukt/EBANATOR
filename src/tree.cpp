@@ -22,16 +22,15 @@ TreeFuncStatus TreeCtor(tree_t *tree, int start_capacity)
     ON_TREE_DEBUG (sprintf(tree->root_ptr->name, NODE_NAME_PREFIX"%d", 0));
 
     ON_TREE_DEBUG (
-        char logfile_path[PATH_NAME_LEN] = {};
-        GetFilePath(LOGFILE_NAME, LOGFILE_FOLDER, logfile_path);
-
-        tree->logfile = fopen(logfile_path, "w");
+        tree->logfile = OpenLogFile(LOGFILE_NAME);
+        assert(tree->logfile);
 
         tree->drawn_graphs_num = 0;
         tree->error = TREE_OK;
     );
 
     TREE_ASSERT(tree);
+    TREE_DUMP(tree);
 
     return TREE_FUNC_OK;
 }
@@ -46,7 +45,11 @@ TreeFuncStatus TreeDtor(tree_t *tree)
     tree->size     = 0;
 
     ON_TREE_DEBUG (
+        fprintf(tree->logfile,    "\t\t</pre>     \n"
+                                  "\t</body       \n"
+                                  "</html>");
         fclose(tree->logfile);
+
         tree->error = 0;
         tree->drawn_graphs_num = 0;
         remove(TMP_DOTFILE_NAME);
@@ -73,6 +76,9 @@ node_t *TreeAddLeaf(tree_t *tree, node_t *father, SonDir_t dir)
         father->right = new_node;
 
     tree->size++;
+
+    TREE_ASSERT(tree);
+    TREE_DUMP(tree);
 
     return new_node;   
 }

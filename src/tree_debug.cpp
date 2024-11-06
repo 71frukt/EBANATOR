@@ -3,6 +3,7 @@
 
 #include "tree.h"
 #include "tree_debug.h"
+#include "tree_graph.h"
 
 void TreeAssert(tree_t *tree, const char *file, int line, const char *func)
 {
@@ -69,4 +70,51 @@ char *GetFilePath(const char *name, const char *folder, char *path)
 {
     sprintf(path, "%s%s", folder, name);
     return path;
+}
+
+void TreeDump(tree_t *tree, const char *file, int line, const char *func)
+{
+    TREE_ASSERT(tree);
+    assert(file);
+    assert(func);
+
+    fprintf(stderr, "start of dump\n");
+
+    FILE *logfile = tree->logfile;
+
+    fprintf(logfile, "   TREE_DUMP called from %s:%d  (%s)\n  {\n", file, line, func);
+
+    DrawGraph(tree);
+
+    fprintf(logfile, "<img src = %s%s%d.png width = \"%d%\" style=\"margin-left: 3%\">", GRAPH_FOLDER, GRAPH_NAME_PREFIX, tree->drawn_graphs_num - 1, GRAPH_IMG_WIDTH);
+    fprintf(stderr,  "<img src = %s%s%d.png width = \"%d%\" style=\"margin-left: 3%\">", GRAPH_FOLDER, GRAPH_NAME_PREFIX, tree->drawn_graphs_num - 1, GRAPH_IMG_WIDTH);
+
+    fprintf(logfile, "\n  }\n\n");
+
+    fprintf(stderr, "end of dump\n");
+}
+
+FILE *OpenLogFile(const char *logfile_name)
+{
+    assert(logfile_name);
+
+    char logfile_path[PATH_NAME_LEN] = {};
+    GetFilePath(logfile_name, LOGS_FOLDER, logfile_path);
+
+    FILE *logfile = fopen(logfile_path, "w");
+
+    fprintf(logfile, "<html>                                                                                                            \n"
+                            "\t<head>                                                                                                   \n"
+                            "\t<title>List Logs</title>                                                                                 \n"
+                            "\t<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css\"> \n"
+                            "\t</head>                                                                                                  \n"
+                            "\t<body>                                                                                                   \n"
+                            "\t<title>List Logs</title>                                                                                 \n"
+                            "\t<div class=\"jumbotron text-center\">                                                                    \n"
+                            "\t\t<h1>List logs</h1>                                                                                     \n"
+                            "\t</div>                                                                                                   \n"
+                            "\t<pre>                                                                                                    \n"
+                        );
+
+    return (logfile);
 }
