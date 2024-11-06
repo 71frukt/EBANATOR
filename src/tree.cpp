@@ -70,10 +70,18 @@ node_t *TreeAddLeaf(tree_t *tree, node_t *father, SonDir_t dir)
 
     ON_TREE_DEBUG(sprintf(new_node->name, NODE_NAME_PREFIX"%d", tree->size));
 
-    if (dir == LEFT)
+    if (dir == LEFT && father->left == NODE_PTR_POISON)
         father->left  = new_node;
-    else 
+    
+    else if (dir == RIGHT && father->right == NODE_PTR_POISON)
         father->right = new_node;
+
+    else
+    {
+        fprintf(stderr, "ERROR: attempt to bind a leaf to a occupied vertex\n");
+        tree->error |= TREE_NODES_LINK_ERR;
+        new_node = NODE_PTR_POISON;
+    }
 
     tree->size++;
 

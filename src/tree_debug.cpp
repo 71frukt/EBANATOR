@@ -12,10 +12,10 @@ void TreeAssert(tree_t *tree, const char *file, int line, const char *func)
     if (tree != NULL)
         tree->error |= error;
 
-    if (error != TREE_OK)
+    if (tree->error != TREE_OK)
     {
         fprintf(stderr, "my assertion failed in\t%s:%d\t(%s)\nErrors:\t", file, line, func);
-        PrintTreeErr(error);
+        PrintTreeErr(tree->error);
         assert(0);
     }
 }
@@ -60,6 +60,7 @@ void PrintTreeErr(int error)
     PRINT_ERROR (error, TREE_SIZE_OVERFLOW);
     PRINT_ERROR (error, TREE_SIZE_UNDERFLOW);
     PRINT_ERROR (error, TREE_ROOT_PTR_ERR);
+    PRINT_ERROR (error, TREE_NODES_LINK_ERR);
 
     #undef PRINT_ERROR  
 
