@@ -82,22 +82,22 @@ node_t *TreeAddLeaf(tree_t *tree, node_t *father, SonDir_t son_dir)
     TREE_ASSERT(tree);
     assert(father && "father == NULL in TreeAddLeaf()");
     
-    node_t *son_node = InitNewNode(tree);
+    node_t *son = InitNewNode(tree);
 
-    BindNodes(father, son_node, son_dir);
+    BindNodes(father, son, son_dir);
 
     if ((son_dir == LEFT  && father->left  != NODE_PTR_POISON) 
      && (son_dir == RIGHT && father->right != NODE_PTR_POISON))
     {
         fprintf(stderr, "ERROR: attempt to bind a leaf to a occupied vertex\n");
         tree->error |= TREE_NODES_LINK_ERR;
-        son_node = NODE_PTR_POISON;
+        son = NODE_PTR_POISON;
     }
 
     TREE_ASSERT(tree);
     TREE_DUMP(tree);
 
-    return son_node;   
+    return son;   
 }
 /*
 node_t TreePasteByVal(tree_t *tree, TreeElem_t val)
@@ -109,18 +109,24 @@ node_t TreePasteByVal(tree_t *tree, TreeElem_t val)
         
     }
 }
-
-node_t *TreePasteAfter(tree_t *tree, node_t *pregnant, SonDir_t son_dir, SonDir_t grandson_dir)
-{
-    node_t *new_node = InitNewNode(tree);
-    new_node->father = pregnant;
-
-    if (son_dir == LEFT)
-    {
-
-    }
-}
 */
+
+node_t *TreePasteBetween(tree_t *tree, node_t *pregnant, node_t *grandson, SonDir_t son_dir)
+{
+    TREE_ASSERT(tree);
+    assert(pregnant);
+    assert(grandson);
+
+    node_t *son = InitNewNode(tree);
+
+    BindNodes(pregnant, son, grandson->own_dir);
+    BindNodes(son, grandson, son_dir);
+
+    TREE_ASSERT(tree);
+    TREE_DUMP(tree);
+
+    return son;
+}
 
 TreeFuncStatus BindNodes(node_t *pregnant, node_t *embryo, SonDir_t son_dir)
 {

@@ -69,6 +69,7 @@ TreeFuncStatus  TreeDtor(tree_t *tree);
 node_t         *InitNewNode(tree_t *tree);
 TreeFuncStatus  BindNodes(node_t *pregnant, node_t *embryo, SonDir_t son_dir);
 node_t         *TreeAddLeaf(tree_t *tree, node_t *father, SonDir_t dir);
+node_t         *TreePasteBetween(tree_t *tree, node_t *pregnant, node_t *grandson, SonDir_t son_dir);
 
 // debug
 void  TreeAssert   (tree_t *tree, const char *file, int line, const char *func);

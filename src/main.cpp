@@ -15,6 +15,9 @@ int main()
     node_2->data = 456;
     node_3->data = 789;
 
+    TreePasteBetween(&tree, node_2, node_3, LEFT);
+
+/*
     node_t *node_4 = TreeAddLeaf(&tree, node_1, LEFT);
     node_t *node_5 = TreeAddLeaf(&tree, node_2, LEFT);
     node_t *node_6 = TreeAddLeaf(&tree, node_3, LEFT);
@@ -27,6 +30,7 @@ int main()
     TreeAddLeaf(&tree, node_4, RIGHT);
     TreeAddLeaf(&tree, node_5, RIGHT);
     TreeAddLeaf(&tree, node_6, RIGHT);
+*/
 
     TreeDtor(&tree);
 
