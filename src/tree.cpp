@@ -99,17 +99,52 @@ node_t *TreeAddLeaf(tree_t *tree, node_t *father, SonDir_t son_dir)
 
     return son;   
 }
-/*
-node_t TreePasteByVal(tree_t *tree, TreeElem_t val)
-{
-    node_t *cur_node = tree->root_ptr;
 
-    if (val < cur_node->data)
+node_t *TreePasteByVal(tree_t *tree, TreeElem_t val)
+{
+    TREE_ASSERT(tree);
+
+    node_t *cur_node = tree->root_ptr;
+    node_t *res_node = NULL;
+
+    while (true)
     {
-        
+        assert(cur_node->data != NODE_DATA_POISON && "comparison with the poison value in TreePasteByVal()");
+
+        if (val < cur_node->data)
+        {
+            if (cur_node->left == NODE_PTR_POISON)
+            {
+                res_node = TreeAddLeaf(tree, cur_node, LEFT);
+                res_node->data = val;
+
+                break;
+            }
+
+            else
+                cur_node = cur_node->left;
+        }
+
+        else 
+        {
+            if (cur_node->right == NODE_PTR_POISON)
+            {
+                res_node = TreeAddLeaf(tree, cur_node, RIGHT);
+                res_node->data = val;
+
+                break;
+            }
+
+            else
+                cur_node = cur_node->right;
+        }
     }
+
+    TREE_ASSERT(tree);
+    TREE_DUMP(tree);
+
+    return res_node;
 }
-*/
 
 node_t *TreePasteBetween(tree_t *tree, node_t *pregnant, node_t *grandson, SonDir_t son_dir)
 {
