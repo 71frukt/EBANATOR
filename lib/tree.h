@@ -13,12 +13,21 @@ typedef int TreeElem_t;
 
 const int NODE_NAME_LEN = 20;
 
+enum SonDir_t
+{
+    LEFT,
+    RIGHT
+};
+
 struct node_t
 {
     TreeElem_t data;
 
-    node_t *left;
-    node_t *right;
+    node_t   *left;
+    node_t   *right;
+
+    node_t   *father;
+    SonDir_t  own_dir;
 
     ON_TREE_DEBUG(char name[NODE_NAME_LEN]);
 };
@@ -44,12 +53,6 @@ enum TreeFuncStatus
     TREE_FUNC_ERR
 };
 
-enum SonDir_t
-{
-    LEFT,
-    RIGHT
-};
-
 const TreeElem_t NODE_DATA_POISON = 0xDA4ADED;
 node_t *const    NODE_PTR_POISON  = NULL;
 
@@ -63,6 +66,8 @@ const size_t START_TREE_CAPACITY = 20;
 
 TreeFuncStatus  TreeCtor(tree_t *tree, int start_capacity);
 TreeFuncStatus  TreeDtor(tree_t *tree);
+node_t         *InitNewNode(tree_t *tree);
+TreeFuncStatus  BindNodes(node_t *pregnant, node_t *embryo, SonDir_t son_dir);
 node_t         *TreeAddLeaf(tree_t *tree, node_t *father, SonDir_t dir);
 
 // debug

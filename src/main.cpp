@@ -19,7 +19,16 @@ int main()
     node_t *node_5 = TreeAddLeaf(&tree, node_2, LEFT);
     node_t *node_6 = TreeAddLeaf(&tree, node_3, LEFT);
 
-    // TreeAddLeaf()
+    TreeAddLeaf(&tree, node_3, RIGHT);
+
+    TreeAddLeaf(&tree, node_4, LEFT);
+    TreeAddLeaf(&tree, node_5, LEFT);
+    TreeAddLeaf(&tree, node_6, LEFT);
+    TreeAddLeaf(&tree, node_4, RIGHT);
+    TreeAddLeaf(&tree, node_5, RIGHT);
+    TreeAddLeaf(&tree, node_6, RIGHT);
+
+    TreeDtor(&tree);
 
     return 0;
 }
