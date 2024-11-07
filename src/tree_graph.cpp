@@ -9,10 +9,12 @@ void DrawGraph(tree_t *tree)
 {
     TREE_ASSERT(tree);
 
+fprintf(stderr, "start od draw graph\n");
+
     FILE *dot_file = fopen(TMP_DOTFILE_NAME, "w");
+fprintf(stderr, "end od draw graph\n");
 
     fprintf(dot_file, "digraph G{           \n"   
-                        // "rankdir = LR;      \n"  
                         "bgcolor = \"%s\";  \n" , BACKGROUND_COLOR);
 
     InitNodesInDot(tree, dot_file);
@@ -40,9 +42,9 @@ void InitNodesInDot(tree_t *tree, FILE *dot_file)
 {
     for (int i = 0; i < tree->size; i++)
     {
-        node_t *cur_node = &tree->nodes[i];
+        node_t *cur_node = tree->node_ptrs[i];
 
-        char data_val_str  [10];
+        char data_val_str[10];
         VALUE_TO_STR(cur_node->data,  TREE_ELEM_FORMAT, NODE_DATA_POISON, NODE_DATA_POISON_MARK, data_val_str);
         
         const char *left_ptr_str  = (cur_node->left  == NODE_PTR_POISON ? PTR_POISON_MARK : PTR_LEFT_MARK);
@@ -63,9 +65,9 @@ void MakeLinksInDot(tree_t *tree, FILE *dot_file)
 
     for (int i = 0; i < tree->size; i++)
     {
-        node_t *father = &tree->nodes[i];
-        node_t *left   = tree->nodes[i].left;
-        node_t *right  = tree->nodes[i].right;
+        node_t *father = tree->node_ptrs[i];
+        node_t *left   = tree->node_ptrs[i]->left;
+        node_t *right  = tree->node_ptrs[i]->right;
 
         if (left != NODE_PTR_POISON)
             fprintf(dot_file, "%s: <%s> -> %s\n", father->name, PTR_LEFT_MARK, left->name);

@@ -4,11 +4,18 @@
 
 int main()
 {
+    // int a = 1;
+    // int b = 2;
+    // ptrdiff_t huy = (int) (&b - &a);
+    // fprintf(stderr, "PROVERKA:\n a[%llu] b[%llu], &a - &b = %lld\n\n\n", &a, &b, huy);
+
+
     tree_t tree = {};
-    TreeCtor(&tree, 20);
+    TreeCtor(&tree, 2);
 
     tree.root_ptr->data = -666;
     TreePasteByVal(&tree, 123);
+fprintf(stderr, "\n\t\t\t\tHUILA\n");
     TreePasteByVal(&tree, 103);
     TreePasteByVal(&tree, 222);
     TreePasteByVal(&tree, 111);

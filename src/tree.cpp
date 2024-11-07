@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
 #include <assert.h>
 
 #include "tree.h"
@@ -14,9 +16,13 @@ TreeFuncStatus TreeCtor(tree_t *tree, int start_capacity)
     tree->capacity = start_capacity;
     tree->size     = 1;
 
-    tree->nodes = (node_t *) calloc(tree->capacity, sizeof(node_t));
+    tree->node_ptrs     = (node_t **) calloc(start_capacity, sizeof(node_t*));
+    node_t *start_nodes = (node_t *)  calloc(start_capacity, sizeof(node_t));
 
-    tree->root_ptr         = &tree->nodes[0];
+    for (int i = 0; i < start_capacity; i++)
+        tree->node_ptrs[i] = start_nodes + i;
+
+    tree->root_ptr         = tree->node_ptrs[0];
     tree->root_ptr->data   = NODE_DATA_POISON;
     tree->root_ptr->left   = NODE_PTR_POISON;
     tree->root_ptr->father = NODE_PTR_POISON;
@@ -40,7 +46,7 @@ TreeFuncStatus TreeDtor(tree_t *tree)
 {
     TREE_ASSERT(tree);
 
-    free(tree->nodes);
+    free(tree->node_ptrs);
 
     tree->capacity = 0;
     tree->size     = 0;
@@ -63,12 +69,21 @@ node_t *InitNewNode(tree_t *tree)
 {
     TREE_ASSERT(tree);
 
-    node_t *new_node = &tree->nodes[tree->size];      // TODO: TreeRecalloc
+    if (tree->size >= tree->capacity)
+    {
+        int new_capacity = tree->capacity * 2;
+        TreeReacalloc(tree, new_capacity);
+    }
+
+    node_t *new_node = tree->node_ptrs[tree->size];      // TODO: TreeRecalloc
+    assert(new_node);
     new_node->data   = NODE_DATA_POISON;
     new_node->left   = NODE_PTR_POISON;
     new_node->right  = NODE_PTR_POISON;
 
     ON_TREE_DEBUG(sprintf(new_node->name, NODE_NAME_PREFIX"%d", tree->size));
+
+fprintf(stderr, "new_node->name = '%s'\n", new_node->name);
 
     tree->size++;
 
@@ -85,7 +100,6 @@ node_t *TreeAddLeaf(tree_t *tree, node_t *father, SonDir_t son_dir)
     node_t *son = InitNewNode(tree);
 
     BindNodes(father, son, son_dir);
-
     if ((son_dir == LEFT  && father->left  != NODE_PTR_POISON) 
      && (son_dir == RIGHT && father->right != NODE_PTR_POISON))
     {
@@ -188,6 +202,31 @@ TreeFuncStatus TreePrint(node_t *node)
     TreePrint(node->left);
     printf( "%" TREE_ELEM_FORMAT " " , node->data);
     TreePrint(node->right);
+
+    return TREE_FUNC_OK;
+}
+
+TreeFuncStatus TreeReacalloc(tree_t *tree, int new_capacity)
+{   
+    TREE_ASSERT(tree);
+    assert(new_capacity > 1);
+
+    int prev_capacity = tree->capacity;
+    tree->capacity    = new_capacity;
+
+    tree->node_ptrs   = (node_t **) realloc(tree->node_ptrs, new_capacity * sizeof(node_t *));
+    node_t *new_nodes = (node_t *)   calloc(new_capacity - prev_capacity,   sizeof(node_t));
+
+    assert(tree->node_ptrs);
+    assert(new_nodes);
+
+    for (int i = 0; i < new_capacity - prev_capacity; i++)
+    {
+        fprintf(stderr, "%d[%p] ", i,  new_nodes + i);
+        tree->node_ptrs[prev_capacity + i] = new_nodes + i;
+    }
+
+    TREE_ASSERT(tree);
 
     return TREE_FUNC_OK;
 }

@@ -27,8 +27,12 @@ int TreeVerify(tree_t *tree)
     if (tree == NULL)
         return TREE_PTR_ERR;
 
-    if (tree->nodes == NULL)
+    if (tree->node_ptrs == NULL)
         res_err |= TREE_NODES_PTR_ERR;
+
+    for (int i = 0; i < tree->capacity; i++)
+        if (tree->node_ptrs[i] == NULL)
+            res_err |= TREE_NODES_PTR_ERR;
 
     if (tree->capacity <= 0)
         res_err |= TREE_CAPA_UNDERFLOW;
@@ -36,7 +40,7 @@ int TreeVerify(tree_t *tree)
     if (tree->size <= 0)
         res_err |= TREE_SIZE_UNDERFLOW;
 
-    if (tree->size >= tree->capacity)
+    if (tree->size > tree->capacity)
         res_err |= TREE_SIZE_OVERFLOW;
 
     if (tree->root_ptr == NULL)
@@ -79,20 +83,16 @@ void TreeDump(tree_t *tree, const char *file, int line, const char *func)
     assert(file);
     assert(func);
 
-    fprintf(stderr, "start of dump\n");
-
     FILE *logfile = tree->logfile;
 
     fprintf(logfile, "   TREE_DUMP called from %s:%d  (%s)\n  {\n", file, line, func);
 
     DrawGraph(tree);
 
-    fprintf(logfile, "<img src = %s%s%d.png width = \"%d%%\" style=\"margin-left: 3%%\">", GRAPH_FOLDER, GRAPH_NAME_PREFIX, tree->drawn_graphs_num - 1, GRAPH_IMG_WIDTH);
-    fprintf(stderr,  "<img src = %s%s%d.png width = \"%d%%\" style=\"margin-left: 3%%\">", GRAPH_FOLDER, GRAPH_NAME_PREFIX, tree->drawn_graphs_num - 1, GRAPH_IMG_WIDTH);
+    fprintf(logfile, "<img src = %s%s%d.png width = \"%d%%\" style=\"margin-left: 3%%\">\n", GRAPH_FOLDER, GRAPH_NAME_PREFIX, tree->drawn_graphs_num - 1, GRAPH_IMG_WIDTH);
+    fprintf(stderr,  "<img src = %s%s%d.png width = \"%d%%\" style=\"margin-left: 3%%\">\n", GRAPH_FOLDER, GRAPH_NAME_PREFIX, tree->drawn_graphs_num - 1, GRAPH_IMG_WIDTH);
 
     fprintf(logfile, "\n  }\n\n");
-
-    fprintf(stderr, "end of dump\n");
 }
 
 FILE *OpenLogFile(const char *logfile_name)
@@ -106,11 +106,11 @@ FILE *OpenLogFile(const char *logfile_name)
 
     fprintf(logfile, "<html>                                                                                                            \n"
                             "\t<head>                                                                                                   \n"
-                            "\t<title>List Logs</title>                                                                                 \n"
+                            "\t<title>Tree Logs</title>                                                                                 \n"
                             "\t<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css\"> \n"
                             "\t</head>                                                                                                  \n"
                             "\t<body>                                                                                                   \n"
-                            "\t<title>List Logs</title>                                                                                 \n"
+                            "\t<title>Tree Logs</title>                                                                                 \n"
                             "\t<div class=\"jumbotron text-center\">                                                                    \n"
                             "\t\t<h1>List logs</h1>                                                                                     \n"
                             "\t</div>                                                                                                   \n"
