@@ -90,7 +90,7 @@ void TreeDump(tree_t *tree, const char *file, int line, const char *func)
     DrawGraph(tree);
 
     fprintf(logfile, "<img src = %s%s%d.png width = \"%d%%\" style=\"margin-left: 3%%\">\n", GRAPH_FOLDER, GRAPH_NAME_PREFIX, tree->drawn_graphs_num - 1, GRAPH_IMG_WIDTH);
-    fprintf(stderr,  "<img src = %s%s%d.png width = \"%d%%\" style=\"margin-left: 3%%\">\n", GRAPH_FOLDER, GRAPH_NAME_PREFIX, tree->drawn_graphs_num - 1, GRAPH_IMG_WIDTH);
+    // fprintf(stderr,  "<img src = %s%s%d.png width = \"%d%%\" style=\"margin-left: 3%%\">\n", GRAPH_FOLDER, GRAPH_NAME_PREFIX, tree->drawn_graphs_num - 1, GRAPH_IMG_WIDTH);
 
     fprintf(logfile, "\n  }\n\n");
 }

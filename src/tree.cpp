@@ -83,7 +83,7 @@ node_t *InitNewNode(tree_t *tree)
 
     ON_TREE_DEBUG(sprintf(new_node->name, NODE_NAME_PREFIX"%d", tree->size));
 
-fprintf(stderr, "new_node->name = '%s'\n", new_node->name);
+// fprintf(stderr, "new_node->name = '%s'\n", new_node->name);
 
     tree->size++;
 
@@ -160,16 +160,16 @@ node_t *TreePasteByVal(tree_t *tree, TreeElem_t val)
     return res_node;
 }
 
-node_t *TreePasteBetween(tree_t *tree, node_t *pregnant, node_t *grandson, SonDir_t son_dir)
+node_t *TreePasteBetween(tree_t *tree, node_t *pregnant, node_t *grandson, SonDir_t grandson_oun_dir)
 {
     TREE_ASSERT(tree);
-    assert(pregnant);
+    // assert(pregnant);
     assert(grandson);
 
     node_t *son = InitNewNode(tree);
 
     BindNodes(pregnant, son, grandson->own_dir);
-    BindNodes(son, grandson, son_dir);
+    BindNodes(son, grandson, grandson_oun_dir);
 
     TREE_ASSERT(tree);
     TREE_DUMP(tree);

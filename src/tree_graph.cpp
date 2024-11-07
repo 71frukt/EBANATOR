@@ -84,6 +84,6 @@ void MakeGraphPicture(const char *dotfile_path, const char *picture_path)
     char cmd_command[CMD_COMMAND_LEN] = {};
 
     sprintf(cmd_command, "dot %s -T png -o %s\n", dotfile_path, picture_path);
-fprintf(stderr, "command: %s\n", cmd_command);
+// fprintf(stderr, "command: %s\n", cmd_command);
     system(cmd_command);
 }
