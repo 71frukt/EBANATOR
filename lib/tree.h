@@ -5,8 +5,8 @@
 
 #define TREE_DEBUG
 
-typedef int TreeElem_t;
-#define TREE_ELEM_FORMAT "d"
+typedef char* TreeElem_t;
+#define TREE_ELEM_FORMAT "s"
 #define PTR_FORMAT       "p"
 
 #include "tree_debug.h"
@@ -53,7 +53,7 @@ enum TreeFuncStatus
     TREE_FUNC_ERR
 };
 
-const TreeElem_t NODE_DATA_POISON = 0xDA4ADED;
+const TreeElem_t NODE_DATA_POISON = NULL;
 node_t *const    NODE_PTR_POISON  = NULL;
 
 const char *const NODE_DATA_POISON_MARK = "DATA#";

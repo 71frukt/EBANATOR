@@ -1,0 +1,4 @@
+digraph G{           
+bgcolor = "#FFF3D1";  
+node_0 [shape = "record", label = "{DATA# | { <left> PTR# | <right> PTR# } }"]
+} 

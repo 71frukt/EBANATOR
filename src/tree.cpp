@@ -16,7 +16,7 @@ TreeFuncStatus TreeCtor(tree_t *tree, int start_capacity)
     tree->capacity = start_capacity;
     tree->size     = 1;
 
-    tree->node_ptrs     = (node_t **) calloc(start_capacity, sizeof(node_t*));
+    tree->node_ptrs     = (node_t **) calloc(start_capacity, sizeof(node_t*));      // TODO: in Recalloc()
     node_t *start_nodes = (node_t *)  calloc(start_capacity, sizeof(node_t));
 
     for (int i = 0; i < start_capacity; i++)
@@ -75,7 +75,7 @@ node_t *InitNewNode(tree_t *tree)
         TreeReacalloc(tree, new_capacity);
     }
 
-    node_t *new_node = tree->node_ptrs[tree->size];      // TODO: TreeRecalloc
+    node_t *new_node = tree->node_ptrs[tree->size];         // TODO: remake in InitNode()
     assert(new_node);
     new_node->data   = NODE_DATA_POISON;
     new_node->left   = NODE_PTR_POISON;

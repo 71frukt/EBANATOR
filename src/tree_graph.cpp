@@ -9,10 +9,7 @@ void DrawGraph(tree_t *tree)
 {
     TREE_ASSERT(tree);
 
-fprintf(stderr, "start od draw graph\n");
-
     FILE *dot_file = fopen(TMP_DOTFILE_NAME, "w");
-fprintf(stderr, "end od draw graph\n");
 
     fprintf(dot_file, "digraph G{           \n"   
                         "bgcolor = \"%s\";  \n" , BACKGROUND_COLOR);
