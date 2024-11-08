@@ -195,18 +195,6 @@ TreeFuncStatus BindNodes(node_t *pregnant, node_t *embryo, SonDir_t son_dir)
     return TREE_FUNC_OK;
 }
 
-TreeFuncStatus TreePrint(node_t *node)
-{
-    if (node == NULL)
-        return TREE_FUNC_OK;
-
-    TreePrint(node->left);
-    printf( "%" TREE_ELEM_FORMAT " " , node->data);
-    TreePrint(node->right);
-
-    return TREE_FUNC_OK;
-}
-
 TreeFuncStatus TreeReacalloc(tree_t *tree, int new_capacity)
 {   
     TREE_ASSERT(tree);

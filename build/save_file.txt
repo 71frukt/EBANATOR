@@ -1,0 +1,19 @@
+{ DATA#
+   { PTR# }
+   { mentor
+      { XZ chto
+         { PTR# }
+         { PTR# }
+      }
+      { hui ne sosal
+         { serega
+            { PTR# }
+            { PTR# }
+         }
+         { loh yopta
+            { PTR# }
+            { PTR# }
+         }
+      }
+   }
+}

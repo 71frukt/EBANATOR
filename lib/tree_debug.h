@@ -32,14 +32,6 @@ enum TreeError_t
 #define TREE_DUMP(tree)
 #endif
 
-#define VALUE_TO_STR(val, val_type_specifier, poison_val, poison_mark, res_str)             \
-{                                                                                           \
-    if (val == poison_val)                                                                  \
-        sprintf(res_str, "%s", poison_mark);                                                \
-    else                                                                                    \
-        sprintf(res_str, "%" val_type_specifier, val);                                      \
-}
-
 const int PATH_NAME_LEN   = 100;
 const int CMD_COMMAND_LEN = 100;
 

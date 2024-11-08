@@ -14,6 +14,8 @@ typedef char* TreeElem_t;
 const int NODE_NAME_LEN = 20;
 const int LABEL_LENGTH  = 50;
 
+const int OFFSET_MAX_LEN = 50;
+
 enum SonDir_t
 {
     LEFT,
@@ -62,7 +64,9 @@ const char *const PTR_POISON_MARK       = "PTR#";
 const char *const PTR_LEFT_MARK         = "left";
 const char *const PTR_RIGHT_MARK        = "right";
 
+const char *const BASE_SAVE_FILE_NAME   = "save_file.txt";
 
+// tree
 TreeFuncStatus  TreeCtor         (tree_t *tree, int start_capacity);
 TreeFuncStatus  TreeDtor         (tree_t *tree);
 node_t         *InitNewNode      (tree_t *tree);
@@ -71,7 +75,9 @@ TreeFuncStatus  BindNodes        (node_t *pregnant, node_t *embryo, SonDir_t son
 node_t         *TreeAddLeaf      (tree_t *tree, node_t *father, SonDir_t dir);
 node_t         *TreePasteBetween (tree_t *tree, node_t *pregnant, node_t *grandson, SonDir_t grandson_oun_dir);
 node_t         *TreePasteByVal   (tree_t *tree, TreeElem_t val);
-TreeFuncStatus  TreePrint        (node_t *node);
+const char     *GetSaveFileName  (const int argc, const char **argv);
+TreeFuncStatus  SaveTreeInFile   (tree_t *tree, const char *dest_file_name);
+TreeFuncStatus  TreePrint        (node_t *node, FILE *dest_file);
 
 // debug            
 void  TreeAssert   (tree_t *tree, const char *file, int line, const char *func);
@@ -86,5 +92,14 @@ void  InitNodesInDot   (tree_t *tree, FILE *dot_file);
 void  MakeLinksInDot   (tree_t *tree, FILE *dot_file);
 void  MakeGraphPicture (const char *dotfile_path, const char *picture_path);
 FILE *OpenLogFile      (const char *logfile_name);
+
+
+#define VALUE_TO_STR(val, val_type_specifier, poison_val, poison_mark, res_str)             \
+{                                                                                           \
+    if (val == poison_val)                                                                  \
+        sprintf(res_str, "%s", poison_mark);                                                \
+    else                                                                                    \
+        sprintf(res_str, "%" val_type_specifier, val);                                      \
+}
 
 #endif
