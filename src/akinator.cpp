@@ -14,7 +14,9 @@ void AkinatorRun(tree_t *tree, labels_t *labels)
     while (true)
     {
         node_t *cur_node = tree->root_ptr->right;
-        AskQuestion(cur_node, tree, labels);
+
+        if (AskQuestion(cur_node, tree, labels) == GAME_EXIT)
+            break;
     }
 
     TREE_ASSERT(tree);
@@ -48,30 +50,31 @@ char *AddToLabels(char *got_str, labels_t *labels)
 
     char *res_str = &labels->text[labels->cur_length];
 
-    sprintf(res_str, "%s\0", got_str);
+    sprintf(res_str, "%s%c", got_str, '\0');
 
     labels->cur_length += (strlen(got_str) + 1);        // ещё \0
 
     return res_str;
 }
 
-void AskQuestion(node_t *cur_node, tree_t *tree, labels_t *labels)
+GameStatus_t AskQuestion(node_t *cur_node, tree_t *tree, labels_t *labels)
 {
     TREE_ASSERT(tree);
     assert(cur_node);
     assert(labels);
 
-    printf("Is it %s?\t(%s/%s)\n", cur_node->data, RIGHT_DIR_ANSWER, LEFT_DIR_ANSWER);
+    printf("Is it %s?\t(%s/%s)\n", cur_node->data, ANSWER_YES_MARK, ANSWER_NO_MARK);
 
-    SonDir_t dir = GetSonDirByAnswer();
+    SonDir_t dir = (GetAnswer() == ANSWER_YES ? RIGHT : LEFT);
 
     if (cur_node->left == NODE_PTR_POISON && cur_node->right == NODE_PTR_POISON)        // дошли до ответа
     {
         if (dir == RIGHT)                                                               // правильный ответ
         {
             printf("It is %s!\n", cur_node->data);
-            printf("Game over\n");
-            return;
+            printf("Game over\n\n\n");
+
+            return ResumeOrExit();
         }
 
         else                                                                            // не тот
@@ -86,7 +89,8 @@ void AskQuestion(node_t *cur_node, tree_t *tree, labels_t *labels)
             GetInputLabel(comparing_node, labels);
 
             printf("Ok! I'll take it into account next time\n");
-            return;
+            printf("Game over\n\n\n");
+            return ResumeOrExit();
         }
     }
 
@@ -106,29 +110,33 @@ void AskQuestion(node_t *cur_node, tree_t *tree, labels_t *labels)
         BindNodes(cur_node, new_node, dir);
 
         printf("Ok! I'll take it into account next time\n");
-        return;
+        printf("Game over\n\n\n");
+        return ResumeOrExit();
     }
 
     TREE_ASSERT(tree);
     TREE_DUMP(tree);
+
+    return GAME_EXIT;
 }
 
-SonDir_t GetSonDirByAnswer()
+Answer_t GetAnswer()
 {
     while (true)
     {
         char answer[ANSWER_LENGTH] = {};
 
-        scanf("%s", answer);
+        scanf("%[^\n]%*c", answer);
+        // scanf("%s", answer);
 
-        if (stricmp(answer, LEFT_DIR_ANSWER) == 0)
-            return LEFT;
+        if (stricmp(answer, ANSWER_NO_MARK) == 0)
+            return ANSWER_NO;
         
-        else if (stricmp(answer, RIGHT_DIR_ANSWER) == 0)
-            return RIGHT;
+        else if (stricmp(answer, ANSWER_YES_MARK) == 0)
+            return ANSWER_YES;
 
         else    
-            printf("Incorrect input. Use %s/%s:\n", RIGHT_DIR_ANSWER, LEFT_DIR_ANSWER);
+            printf("Incorrect input. Use %s/%s:\n", ANSWER_YES_MARK, ANSWER_NO_MARK);
     }
 }
 
@@ -136,10 +144,17 @@ char *GetInputLabel(node_t *node, labels_t *labels)
 {
     char hero_name[LABEL_LENGTH] = {};
         
-    scanf("%s", hero_name);
+    scanf("%[^\n]%*c", hero_name);
     printf("\n");
 
     node->data = AddToLabels(hero_name, labels);
 
     return node->data;
+}
+
+GameStatus_t ResumeOrExit()
+{
+    printf("Do you want to restart the game? (%s/%s)\n", ANSWER_YES_MARK, ANSWER_NO_MARK);
+
+    return (GetAnswer() == ANSWER_YES ? GAME_RESUME : GAME_EXIT);
 }

@@ -1,6 +1,0 @@
-digraph G{           
-bgcolor = "#FFF3D1";  
-node_0 [shape = "record", label = "{DATA# | { <left> PTR# | <right> right } }"]
-node_1 [shape = "record", label = "{XZ chto | { <left> PTR# | <right> PTR# } }"]
-node_0: <right> -> node_1
-} 

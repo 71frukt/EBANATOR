@@ -41,7 +41,7 @@ void InitNodesInDot(tree_t *tree, FILE *dot_file)
     {
         node_t *cur_node = tree->node_ptrs[i];
 
-        char data_val_str[10];
+        char data_val_str[LABEL_LENGTH];
         VALUE_TO_STR(cur_node->data,  TREE_ELEM_FORMAT, NODE_DATA_POISON, NODE_DATA_POISON_MARK, data_val_str);
         
         const char *left_ptr_str  = (cur_node->left  == NODE_PTR_POISON ? PTR_POISON_MARK : PTR_LEFT_MARK);

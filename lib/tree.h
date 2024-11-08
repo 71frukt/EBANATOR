@@ -12,6 +12,7 @@ typedef char* TreeElem_t;
 #include "tree_debug.h"
 
 const int NODE_NAME_LEN = 20;
+const int LABEL_LENGTH  = 50;
 
 enum SonDir_t
 {
