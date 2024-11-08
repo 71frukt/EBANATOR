@@ -72,8 +72,6 @@ GameStatus_t AskQuestion(node_t *cur_node, tree_t *tree, labels_t *labels)
         if (dir == RIGHT)                                                               // правильный ответ
         {
             printf("It is %s!\n", cur_node->data);
-            printf("Game over\n\n\n");
-
             return ResumeOrExit();
         }
 
@@ -89,7 +87,6 @@ GameStatus_t AskQuestion(node_t *cur_node, tree_t *tree, labels_t *labels)
             GetInputLabel(comparing_node, labels);
 
             printf("Ok! I'll take it into account next time\n");
-            printf("Game over\n\n\n");
             return ResumeOrExit();
         }
     }
@@ -110,7 +107,6 @@ GameStatus_t AskQuestion(node_t *cur_node, tree_t *tree, labels_t *labels)
         BindNodes(cur_node, new_node, dir);
 
         printf("Ok! I'll take it into account next time\n");
-        printf("Game over\n\n\n");
         return ResumeOrExit();
     }
 
@@ -118,43 +114,4 @@ GameStatus_t AskQuestion(node_t *cur_node, tree_t *tree, labels_t *labels)
     TREE_DUMP(tree);
 
     return GAME_EXIT;
-}
-
-Answer_t GetAnswer()
-{
-    while (true)
-    {
-        char answer[ANSWER_LENGTH] = {};
-
-        scanf("%[^\n]%*c", answer);
-        // scanf("%s", answer);
-
-        if (stricmp(answer, ANSWER_NO_MARK) == 0)
-            return ANSWER_NO;
-        
-        else if (stricmp(answer, ANSWER_YES_MARK) == 0)
-            return ANSWER_YES;
-
-        else    
-            printf("Incorrect input. Use %s/%s:\n", ANSWER_YES_MARK, ANSWER_NO_MARK);
-    }
-}
-
-char *GetInputLabel(node_t *node, labels_t *labels)
-{
-    char hero_name[LABEL_LENGTH] = {};
-        
-    scanf("%[^\n]%*c", hero_name);
-    printf("\n");
-
-    node->data = AddToLabels(hero_name, labels);
-
-    return node->data;
-}
-
-GameStatus_t ResumeOrExit()
-{
-    printf("Do you want to restart the game? (%s/%s)\n", ANSWER_YES_MARK, ANSWER_NO_MARK);
-
-    return (GetAnswer() == ANSWER_YES ? GAME_RESUME : GAME_EXIT);
 }

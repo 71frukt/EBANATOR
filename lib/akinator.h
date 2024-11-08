@@ -31,14 +31,14 @@ struct labels_t
     size_t  capacity;
 };
 
-void  AkinatorRun   (tree_t *tree, labels_t *labels);
-void  LabelsCtor    (labels_t *labels, int start_capacity);
-void  LabelsDtor    (labels_t *labels);
-char *AddToLabels   (char *got_str, labels_t *labels);
-char *GetInputLabel (node_t *node, labels_t *labels);
+void          AkinatorRun   (tree_t *tree, labels_t *labels);
+void          LabelsCtor    (labels_t *labels, int start_capacity);
+void          LabelsDtor    (labels_t *labels);
+char         *AddToLabels   (char *got_str, labels_t *labels);
+GameStatus_t  AskQuestion   (node_t *cur_node, tree_t *tree, labels_t *labels);
 
-GameStatus_t  AskQuestion (node_t *cur_node, tree_t *tree, labels_t *labels);
-GameStatus_t  ResumeOrExit();
-Answer_t      GetAnswer();
+char         *GetInputLabel (node_t *node, labels_t *labels);
+Answer_t      GetAnswer     ();
+GameStatus_t  ResumeOrExit  ();
 
 #endif
