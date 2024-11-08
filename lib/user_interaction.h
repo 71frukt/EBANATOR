@@ -14,7 +14,7 @@
 
 #define CHANGE_STR_COLOR(STR, COLOR)  "\x1b[" COLOR "m" STR "\x1b[0m"
 
-#define CHANGE_INPUT_COLOR(COLOR, ...)                                          \
+#define CHANGE_INDENT_COLOR(COLOR, ...)                                          \
 {                                                                               \
     printf("\x1b[" COLOR "m");                                                  \
     __VA_ARGS__;                                                                \

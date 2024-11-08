@@ -10,7 +10,7 @@ char *GetInputLabel(node_t *node, labels_t *labels)
     {
         char hero_name[LABEL_LENGTH] = {};
 
-        CHANGE_INPUT_COLOR (CYAN, 
+        CHANGE_INDENT_COLOR (CYAN, 
             scanf("%[^\n]", hero_name);
         );
 
@@ -39,7 +39,7 @@ Answer_t GetAnswer()
         char answer[ANSWER_LENGTH] = {};
 
         // scanf("%[^\n]%*c", answer);          // TODO почему так не работает 
-        CHANGE_INPUT_COLOR (CYAN, 
+        CHANGE_INDENT_COLOR (CYAN, 
             scanf("%[^\n]", answer);            // а так работает
         );
 
@@ -58,12 +58,15 @@ Answer_t GetAnswer()
 
 GameStatus_t ResumeOrExit()
 {
-    printf("Do you want to restart the game? (" CHANGE_STR_COLOR("%s", GREEN) "/" CHANGE_STR_COLOR("%s", GREEN) "):\n", ANSWER_YES_MARK, ANSWER_NO_MARK);
+    printf("\nDo you want to restart the game? (" CHANGE_STR_COLOR("%s", GREEN) "/" CHANGE_STR_COLOR("%s", GREEN) "):\n", ANSWER_YES_MARK, ANSWER_NO_MARK);
 
     Answer_t answer = GetAnswer();
 
     if (answer == ANSWER_YES)
+    {
+        printf(CHANGE_STR_COLOR("\n\nNew game\n", MAGENTA));
         return GAME_RESUME;
+    }
     
     else
     {

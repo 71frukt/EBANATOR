@@ -9,7 +9,7 @@ char MANAGER_LABEL[LABEL_LENGTH] = "XZ chto";
 int main()
 {
     labels_t labels = {};
-    LabelsCtor(&labels, START_LABELS_CAPACITY);
+    LabelsCtor(&labels, START_DATATREE_SIZE);
 
     tree_t tree = {};
     TreeCtor(&tree, START_DATATREE_SIZE);    
@@ -33,9 +33,10 @@ int main()
     node_3->data = AddToLabels("negr", &labels);
 
 */
-    TREE_DUMP(&tree);
 
     AkinatorRun(&tree, &labels);
+
+    TREE_DUMP(&tree);
 
     TreeDtor(&tree);
     LabelsDtor(&labels);
@@ -62,6 +63,5 @@ int main()
     // TreePrint(tree.root_ptr);
 
     // TreeDtor(&tree);
-
     return 0;
 }

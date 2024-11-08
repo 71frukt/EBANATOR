@@ -100,6 +100,7 @@ node_t *TreeAddLeaf(tree_t *tree, node_t *father, SonDir_t son_dir)
     node_t *son = InitNewNode(tree);
 
     BindNodes(father, son, son_dir);
+
     if ((son_dir == LEFT  && father->left  != NODE_PTR_POISON) 
      && (son_dir == RIGHT && father->right != NODE_PTR_POISON))
     {
@@ -209,7 +210,7 @@ TreeFuncStatus TreePrint(node_t *node)
 TreeFuncStatus TreeReacalloc(tree_t *tree, int new_capacity)
 {   
     TREE_ASSERT(tree);
-    assert(new_capacity > 1);
+    assert(new_capacity > 0);
 
     int prev_capacity = tree->capacity;
     tree->capacity    = new_capacity;
