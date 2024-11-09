@@ -12,11 +12,14 @@ void AkinatorRun(tree_t *tree, labels_t *labels)
     TREE_ASSERT(tree);
     assert(labels);
 
+
     while (true)
     {
-        node_t *cur_node = tree->root_ptr->right;
+        TREE_DUMP(tree);
 
-        if (AskQuestion(cur_node, tree, labels) == GAME_EXIT)
+        node_t *start_node = (START_NODE_OWN_DIRECTION == LEFT ? tree->root_ptr->left : tree->root_ptr->right);
+
+        if (AskQuestion(start_node, tree, labels) == GAME_EXIT)
             break;
     }
 

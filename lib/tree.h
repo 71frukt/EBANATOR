@@ -67,17 +67,14 @@ const char *const PTR_RIGHT_MARK        = "right";
 const char *const BASE_SAVE_FILE_NAME   = "save_file.txt";
 
 // tree
-TreeFuncStatus  TreeCtor         (tree_t *tree, int start_capacity);
-TreeFuncStatus  TreeDtor         (tree_t *tree);
-node_t         *InitNewNode      (tree_t *tree);
-TreeFuncStatus  TreeReacalloc    (tree_t *tree, int new_capacity);
-TreeFuncStatus  BindNodes        (node_t *pregnant, node_t *embryo, SonDir_t son_dir);
-node_t         *TreeAddLeaf      (tree_t *tree, node_t *father, SonDir_t dir);
-node_t         *TreePasteBetween (tree_t *tree, node_t *pregnant, node_t *grandson, SonDir_t grandson_oun_dir);
-node_t         *TreePasteByVal   (tree_t *tree, TreeElem_t val);
-const char     *GetSaveFileName  (const int argc, const char **argv);
-TreeFuncStatus  SaveTreeInFile   (tree_t *tree, const char *dest_file_name);
-TreeFuncStatus  TreePrint        (node_t *node, FILE *dest_file);
+TreeFuncStatus  TreeCtor            (tree_t *tree, int start_capacity);
+TreeFuncStatus  TreeDtor            (tree_t *tree);
+node_t         *InitNewNode         (tree_t *tree);
+TreeFuncStatus  TreeReacalloc       (tree_t *tree, int new_capacity);
+TreeFuncStatus  BindNodes           (node_t *pregnant, node_t *embryo, SonDir_t son_dir);
+node_t         *TreeAddLeaf         (tree_t *tree, node_t *father, SonDir_t dir);
+node_t         *TreePasteBetween    (tree_t *tree, node_t *pregnant, node_t *grandson, SonDir_t grandson_oun_dir);
+node_t         *TreePasteByVal      (tree_t *tree, TreeElem_t val);
 
 // debug            
 void  TreeAssert   (tree_t *tree, const char *file, int line, const char *func);

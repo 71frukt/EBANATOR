@@ -1,14 +1,8 @@
 { 'eunuh'
    { 'eblan'
-      { 'bih=g'
-         { 'XZ chto'
-            { 'PTR#' }
-            { 'PTR#' }
-         }
-         { 'popa'
-            { 'PTR#' }
-            { 'PTR#' }
-         }
+      { 'XZ chto'
+         { 'PTR#' }
+         { 'PTR#' }
       }
       { 'ars'
          { 'PTR#' }
