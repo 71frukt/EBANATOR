@@ -16,8 +16,7 @@ enum TreeError_t
     TREE_CAPA_UNDERFLOW = 1 << 2,
     TREE_SIZE_UNDERFLOW = 1 << 3,
     TREE_SIZE_OVERFLOW  = 1 << 4,
-    TREE_ROOT_PTR_ERR   = 1 << 5,
-    TREE_NODES_LINK_ERR = 1 << 6
+    TREE_NODES_LINK_ERR = 1 << 5
 };
 
 #ifdef TREE_DEBUG

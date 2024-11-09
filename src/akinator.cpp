@@ -17,9 +17,7 @@ void AkinatorRun(tree_t *tree, labels_t *labels)
     {
         TREE_DUMP(tree);
 
-        node_t *start_node = (START_NODE_OWN_DIRECTION == LEFT ? tree->root_ptr->left : tree->root_ptr->right);
-
-        if (AskQuestion(start_node, tree, labels) == GAME_EXIT)
+        if (AskQuestion(tree->root_ptr, tree, labels) == GAME_EXIT)
             break;
     }
 

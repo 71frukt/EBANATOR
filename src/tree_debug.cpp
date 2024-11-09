@@ -37,14 +37,11 @@ int TreeVerify(tree_t *tree)
     if (tree->capacity <= 0)
         res_err |= TREE_CAPA_UNDERFLOW;
 
-    if (tree->size <= 0)
+    if (tree->size < 0)
         res_err |= TREE_SIZE_UNDERFLOW;
 
     if (tree->size > tree->capacity)
         res_err |= TREE_SIZE_OVERFLOW;
-
-    if (tree->root_ptr == NULL)
-        res_err |= TREE_ROOT_PTR_ERR;
 
     return res_err;
 }
@@ -63,7 +60,6 @@ void PrintTreeErr(int error)
     PRINT_ERROR (error, TREE_CAPA_UNDERFLOW);
     PRINT_ERROR (error, TREE_SIZE_OVERFLOW);
     PRINT_ERROR (error, TREE_SIZE_UNDERFLOW);
-    PRINT_ERROR (error, TREE_ROOT_PTR_ERR);
     PRINT_ERROR (error, TREE_NODES_LINK_ERR);
 
     #undef PRINT_ERROR  

@@ -13,7 +13,7 @@ TreeFuncStatus SaveTreeInFile(tree_t *tree, const char *dest_file_name)
     FILE *dest_file = fopen(dest_file_name, "w");
     assert(dest_file);
     
-    TreePrintNodeFamily(tree->root_ptr->left, dest_file);
+    TreePrintNodeFamily(tree->root_ptr, dest_file);
 
     fclose(dest_file);
 
@@ -87,7 +87,9 @@ TreeFuncStatus GetTreeFromFile(tree_t *tree, labels_t *labels, const char *input
     FILE *input_file = fopen(input_file_name, "r");
     assert(input_file);
 
-    TreeGetNodeFamily(tree->root_ptr, START_NODE_OWN_DIRECTION, tree, labels, input_file);
+    node_t *shadow_node = tree->node_ptrs[0];
+
+    tree->root_ptr = TreeGetNodeFamily(shadow_node, ROOTPTR_OWN_DIR, tree, labels, input_file);      // начиная с теневого узла
 
     fclose(input_file);
 
@@ -101,7 +103,7 @@ node_t *TreeGetNodeFamily(node_t *father_node, SonDir_t son_dir, tree_t *tree, l
     TREE_ASSERT(tree);
     TREE_DUMP(tree);
 
-    char  cur_str[LABEL_LENGTH + 6] = {};                               // максимум по пробелу, кавычке и фигурной скобке по бокам
+    char cur_str[LABEL_LENGTH + 6] = {};                               // максимум по пробелу, кавычке и фигурной скобке по бокам
 
     fscanf(input_file, "%[^\n]%*c", cur_str);
 

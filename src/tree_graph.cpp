@@ -37,7 +37,7 @@ void DrawGraph(tree_t *tree)
 
 void InitNodesInDot(tree_t *tree, FILE *dot_file)
 {
-    for (int i = 0; i < tree->size; i++)
+    for (int i = 1; i < tree->size; i++)            // начиная с root_ptr = nodes[1]  (nodes[0] = shadow_ptr)
     {
         node_t *cur_node = tree->node_ptrs[i];
 
@@ -60,7 +60,7 @@ void MakeLinksInDot(tree_t *tree, FILE *dot_file)
     TREE_ASSERT(tree);
     assert(dot_file);
 
-    for (int i = 0; i < tree->size; i++)
+    for (int i = 1; i < tree->size; i++)            // начиная с root_ptr = nodes[1]  (nodes[0] = shadow_ptr)
     {
         node_t *father = tree->node_ptrs[i];
         node_t *left   = tree->node_ptrs[i]->left;

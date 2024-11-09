@@ -56,6 +56,8 @@ enum TreeFuncStatus
     TREE_FUNC_ERR
 };
 
+const SonDir_t ROOTPTR_OWN_DIR = LEFT; 
+
 const TreeElem_t NODE_DATA_POISON = NULL;
 node_t *const    NODE_PTR_POISON  = NULL;
 

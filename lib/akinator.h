@@ -40,8 +40,6 @@ struct labels_t
     alloc_marks_t alloc_marks;
 };
 
-const SonDir_t START_NODE_OWN_DIRECTION = LEFT; 
-
 
 void          AkinatorRun    (tree_t *tree, labels_t *labels);
 void          LabelsCtor     (labels_t *labels, int start_capacity);

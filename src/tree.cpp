@@ -14,7 +14,7 @@ TreeFuncStatus TreeCtor(tree_t *tree, int start_capacity)
     assert(start_capacity > 0 && "start_capacity <= 0 in TreeCtor!");
 
     tree->capacity = start_capacity;
-    tree->size     = 1;
+    tree->size     = 0;
 
     tree->node_ptrs     = (node_t **) calloc(start_capacity, sizeof(node_t*));      // TODO: in Recalloc()
     node_t *start_nodes = (node_t *)  calloc(start_capacity, sizeof(node_t));
@@ -22,11 +22,14 @@ TreeFuncStatus TreeCtor(tree_t *tree, int start_capacity)
     for (int i = 0; i < start_capacity; i++)
         tree->node_ptrs[i] = start_nodes + i;
 
-    tree->root_ptr         = tree->node_ptrs[0];
-    tree->root_ptr->data   = NODE_DATA_POISON;
-    tree->root_ptr->left   = NODE_PTR_POISON;
-    tree->root_ptr->father = NODE_PTR_POISON;
-    ON_TREE_DEBUG (sprintf(tree->root_ptr->name, NODE_NAME_PREFIX"%d", 0));
+    InitNewNode(tree);          // init shadow_node
+
+    // tree->root_ptr         = tree->node_ptrs[0];
+    // tree->root_ptr->data   = NODE_DATA_POISON;
+    // tree->root_ptr->left   = NODE_PTR_POISON;
+    // tree->root_ptr->father = NODE_PTR_POISON;
+
+    // ON_TREE_DEBUG (sprintf(tree->root_ptr->name, NODE_NAME_PREFIX"%d", 0));
 
     ON_TREE_DEBUG (
         tree->logfile = OpenLogFile(LOGFILE_NAME);

@@ -1,26 +1,20 @@
-{ 'eunuh'
+{ 'huila'
    { 'eblan'
-      { 'bih=g'
-         { 'XZ chto'
-            { 'PTR#' }
-            { 'PTR#' }
-         }
-         { 'popa'
-            { 'PTR#' }
-            { 'PTR#' }
-         }
+      { 'XZ chto'
+         { 'PTR#' }
+         { 'PTR#' }
       }
       { 'ars'
          { 'PTR#' }
          { 'PTR#' }
       }
    }
-   { 'ymnee'
-      { 'seri'
+   { 'mentor'
+      { 'stepa'
          { 'PTR#' }
          { 'PTR#' }
       }
-      { 'autist'
+      { 'seri'
          { 'PTR#' }
          { 'PTR#' }
       }

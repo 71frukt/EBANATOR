@@ -16,7 +16,7 @@ int main(const int argc, const char **argv)
 
     GetTreeFromFile(&tree, &labels, GetSavefileName(argc, argv));
 
-    // node_t *manager = TreeAddLeaf(&tree, tree.root_ptr, START_NODE_OWN_DIRECTION);
+    // node_t *manager = TreeAddLeaf(&tree, tree.root_ptr, ROOTPTR_OWN_DIR);
     // manager->data   = AddToLabels(MANAGER_LABEL, &labels);
 
     AkinatorRun(&tree, &labels);

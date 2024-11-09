@@ -1,0 +1,16 @@
+digraph G{           
+bgcolor = "#FFF3D1";  
+node_1 [shape = "record", label = "{huila | { <left> left | <right> right } }"]
+node_2 [shape = "record", label = "{eblan | { <left> left | <right> right } }"]
+node_3 [shape = "record", label = "{XZ chto | { <left> PTR# | <right> PTR# } }"]
+node_4 [shape = "record", label = "{ars | { <left> PTR# | <right> PTR# } }"]
+node_5 [shape = "record", label = "{mentor | { <left> left | <right> right } }"]
+node_6 [shape = "record", label = "{stepa | { <left> PTR# | <right> PTR# } }"]
+node_7 [shape = "record", label = "{seri | { <left> PTR# | <right> PTR# } }"]
+node_1: <left> -> node_2
+node_1: <right> -> node_5
+node_2: <left> -> node_3
+node_2: <right> -> node_4
+node_5: <left> -> node_6
+node_5: <right> -> node_7
+} 
