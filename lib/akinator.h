@@ -24,7 +24,7 @@ enum GameStatus_t
     GAME_EXIT
 };
 
-struct alloc_marks_t
+struct labels_alloc_marks_t
 {
     char *data[ALLOC_MARKS_NUM];
     int   size;
@@ -37,7 +37,7 @@ struct labels_t
     
     char **data;
 
-    alloc_marks_t alloc_marks;
+    labels_alloc_marks_t alloc_marks;
 };
 
 
@@ -47,6 +47,7 @@ void          LabelsDtor     (labels_t *labels);
 void          LabelsRecalloc (labels_t *labels, int new_capacity);
 char         *AddToLabels    (char *got_str, labels_t *labels);
 GameStatus_t  AskQuestion    (node_t *cur_node, tree_t *tree, labels_t *labels);
+void          PrintHeroInfo  (node_t *hero);
 
 char         *GetInputLabel  (node_t *node, labels_t *labels);
 Answer_t      GetAnswer      ();

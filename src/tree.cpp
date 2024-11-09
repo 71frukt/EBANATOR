@@ -13,23 +13,12 @@ TreeFuncStatus TreeCtor(tree_t *tree, int start_capacity)
     assert(tree && "tree == nullptr in TreeCtor");
     assert(start_capacity > 0 && "start_capacity <= 0 in TreeCtor!");
 
-    tree->capacity = start_capacity;
+    tree->capacity = 0;
     tree->size     = 0;
 
-    tree->node_ptrs     = (node_t **) calloc(start_capacity, sizeof(node_t*));      // TODO: in Recalloc()
-    node_t *start_nodes = (node_t *)  calloc(start_capacity, sizeof(node_t));
-
-    for (int i = 0; i < start_capacity; i++)
-        tree->node_ptrs[i] = start_nodes + i;
+    TreeReacalloc(tree, start_capacity);
 
     InitNewNode(tree);          // init shadow_node
-
-    // tree->root_ptr         = tree->node_ptrs[0];
-    // tree->root_ptr->data   = NODE_DATA_POISON;
-    // tree->root_ptr->left   = NODE_PTR_POISON;
-    // tree->root_ptr->father = NODE_PTR_POISON;
-
-    // ON_TREE_DEBUG (sprintf(tree->root_ptr->name, NODE_NAME_PREFIX"%d", 0));
 
     ON_TREE_DEBUG (
         tree->logfile = OpenLogFile(LOGFILE_NAME);
@@ -48,6 +37,9 @@ TreeFuncStatus TreeCtor(tree_t *tree, int start_capacity)
 TreeFuncStatus TreeDtor(tree_t *tree)
 {
     TREE_ASSERT(tree);
+
+    for (int i = 0; i < tree->alloc_marks.size; i++)
+        free(tree->alloc_marks.data[i]);
 
     free(tree->node_ptrs);
 
@@ -78,7 +70,7 @@ node_t *InitNewNode(tree_t *tree)
         TreeReacalloc(tree, new_capacity);
     }
 
-    node_t *new_node = tree->node_ptrs[tree->size];         // TODO: remake in InitNode()
+    node_t *new_node = tree->node_ptrs[tree->size];
     assert(new_node);
     new_node->data   = NODE_DATA_POISON;
     new_node->left   = NODE_PTR_POISON;
@@ -167,13 +159,16 @@ node_t *TreePasteByVal(tree_t *tree, TreeElem_t val)
 node_t *TreePasteBetween(tree_t *tree, node_t *pregnant, node_t *grandson, SonDir_t grandson_oun_dir)
 {
     TREE_ASSERT(tree);
-    // assert(pregnant);
+    assert(pregnant);
     assert(grandson);
 
     node_t *son = InitNewNode(tree);
 
     BindNodes(pregnant, son, grandson->own_dir);
     BindNodes(son, grandson, grandson_oun_dir);
+
+    if (grandson == tree->root_ptr)
+        tree->root_ptr = son;
 
     TREE_ASSERT(tree);
     TREE_DUMP(tree);
@@ -200,7 +195,7 @@ TreeFuncStatus BindNodes(node_t *pregnant, node_t *embryo, SonDir_t son_dir)
 
 TreeFuncStatus TreeReacalloc(tree_t *tree, int new_capacity)
 {   
-    TREE_ASSERT(tree);
+    assert(tree);
     assert(new_capacity > 0);
 
     int prev_capacity = tree->capacity;
@@ -209,14 +204,13 @@ TreeFuncStatus TreeReacalloc(tree_t *tree, int new_capacity)
     tree->node_ptrs   = (node_t **) realloc(tree->node_ptrs, new_capacity * sizeof(node_t *));
     node_t *new_nodes = (node_t *)   calloc(new_capacity - prev_capacity,   sizeof(node_t));
 
+    tree->alloc_marks.data[tree->alloc_marks.size++] = new_nodes;
+
     assert(tree->node_ptrs);
     assert(new_nodes);
 
     for (int i = 0; i < new_capacity - prev_capacity; i++)
-    {
-        fprintf(stderr, "%d[%p] ", i,  new_nodes + i);
         tree->node_ptrs[prev_capacity + i] = new_nodes + i;
-    }
 
     TREE_ASSERT(tree);
 

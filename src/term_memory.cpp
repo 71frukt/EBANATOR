@@ -5,6 +5,8 @@
 #include "tree.h"
 #include "akinator.h"
 
+char MANAGER_LABEL[LABEL_LENGTH] = "XZ chto";
+
 TreeFuncStatus SaveTreeInFile(tree_t *tree, const char *dest_file_name)
 {
     TREE_ASSERT(tree);
@@ -89,7 +91,21 @@ TreeFuncStatus GetTreeFromFile(tree_t *tree, labels_t *labels, const char *input
 
     node_t *shadow_node = tree->node_ptrs[0];
 
-    tree->root_ptr = TreeGetNodeFamily(shadow_node, ROOTPTR_OWN_DIR, tree, labels, input_file);      // начиная с теневого узла
+    char label[LABEL_LENGTH] = {};
+
+    if (fscanf(input_file, "%s", label) != 1)
+    {
+        tree->root_ptr       = TreeAddLeaf(tree, shadow_node, ROOTPTR_OWN_DIR);
+        tree->root_ptr->data = AddToLabels(MANAGER_LABEL, labels);
+    }
+
+    else
+    {
+        fseek(input_file, 0, SEEK_SET);
+        tree->root_ptr = TreeGetNodeFamily(shadow_node, ROOTPTR_OWN_DIR, tree, labels, input_file);      // начиная с теневого узла
+    }
+    
+
 
     fclose(input_file);
 
@@ -101,56 +117,32 @@ node_t *TreeGetNodeFamily(node_t *father_node, SonDir_t son_dir, tree_t *tree, l
     assert(father_node);
     assert(input_file);
     TREE_ASSERT(tree);
-    TREE_DUMP(tree);
 
     char cur_str[LABEL_LENGTH + 6] = {};                               // максимум по пробелу, кавычке и фигурной скобке по бокам
 
     fscanf(input_file, "%[^\n]%*c", cur_str);
 
-fprintf(stderr, "cur_str: %s", cur_str);
+fprintf(stderr, "cur_str: %s\n", cur_str);
 
     char node_label[LABEL_LENGTH] = {};  
     sscanf(cur_str, " { ' %[a-z A-Z #][^']", node_label);
 
     if (strcmp(node_label, PTR_POISON_MARK) == 0)     // тогда там 'PTR#'
-    {
-    fprintf(stderr, "\n");
-
         return NODE_PTR_POISON;
-        // if (son_dir == LEFT)
-        //     node->left = NODE_PTR_POISON;
-        // else
-        //     node->right = NODE_PTR_POISON;
-        
-        // return TREE_FUNC_OK;
-    }
 
  // new node
 
     node_t *son_node = InitNewNode(tree);
     son_node->data   = AddToLabels(node_label, labels);
-fprintf(stderr, "\t\t\tlabel = %s\n", son_node->data);
 
-    son_node->own_dir = son_dir;
-    son_node->father = father_node;
-
-    if (son_dir == LEFT)
-        father_node->left  = son_node;
-    else
-        father_node->right = son_node;
+    BindNodes(father_node, son_node, son_dir);
 
     son_node->left  = TreeGetNodeFamily(son_node, LEFT,  tree, labels, input_file);
     son_node->right = TreeGetNodeFamily(son_node, RIGHT, tree, labels, input_file);
 
-    // if (strchr(cursor, '{') == NULL && strchr(cursor, '}') != NULL)     // закрывающая скобка => эту ветвь целиком прошли
-    //     return father_node;
-
     TREE_ASSERT(tree);
-    TREE_DUMP(tree);
 
     fscanf(input_file, "%[^\n]%*c", cur_str);                               // считываем закрывающую фигурную скобку
 
     return son_node;
-
-    // sprintf(node_label, "%[^]")
 }

@@ -59,15 +59,10 @@ void LabelsRecalloc(labels_t *labels, int new_capacity)
     int prev_capacity = labels->capacity;
     labels->capacity  = new_capacity;
     
-    if (prev_capacity == 0)
-        labels->data = (char **)  calloc(new_capacity, sizeof(char *));
+    labels->data =          (char **) realloc(labels->data, new_capacity * sizeof(char *));
+    char *new_labels_text = (char *)   calloc((new_capacity - prev_capacity) * LABEL_LENGTH, sizeof(char));
 
-    else
-        labels->data = (char **) realloc(labels->data, new_capacity * sizeof(char *));
-
-    char *new_labels_text = (char *) calloc((new_capacity - prev_capacity) * LABEL_LENGTH, sizeof(char));
-
-    labels->alloc_marks.data[labels->alloc_marks.size] = new_labels_text;
+    labels->alloc_marks.data[labels->alloc_marks.size++] = new_labels_text;
 
     for (int i = 0; i < new_capacity - prev_capacity; i++)
     {
@@ -107,6 +102,8 @@ GameStatus_t AskQuestion(node_t *cur_node, tree_t *tree, labels_t *labels)
         if (dir == RIGHT)                                                               // правильный ответ
         {
             printf("It is " CHANGE_STR_COLOR("%s", GREEN) "!\n", cur_node->data);
+            PrintHeroInfo(cur_node);
+
             return ResumeOrExit();
         }
 
@@ -126,6 +123,8 @@ GameStatus_t AskQuestion(node_t *cur_node, tree_t *tree, labels_t *labels)
             GetInputLabel(comparing_node, labels);
 
             printf("Ok! I'll take it into account next time\n");
+            PrintHeroInfo(new_node);
+
             return ResumeOrExit();
         }
     }
@@ -146,9 +145,35 @@ GameStatus_t AskQuestion(node_t *cur_node, tree_t *tree, labels_t *labels)
         BindNodes(cur_node, new_node, dir);
 
         printf("Ok! I'll take it into account next time\n");
+        PrintHeroInfo(new_node);
+
         return ResumeOrExit();
     }
 
     TREE_ASSERT(tree);
     TREE_DUMP(tree);
+}
+
+void PrintHeroInfo(node_t *hero)
+{
+    printf(CHANGE_STR_COLOR("%s", CYAN) " is: ", hero->data);
+
+    node_t *cur_node = hero;
+    
+    while (true)
+    {
+        if (cur_node->own_dir == LEFT)
+            printf("not ");
+
+        printf("%s", cur_node->father->data);
+
+        cur_node = cur_node->father;
+
+        if (cur_node->father->father == NODE_PTR_POISON)
+            break;
+
+        printf(", ");
+    }
+
+    printf("\n");
 }

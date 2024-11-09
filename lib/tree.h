@@ -16,6 +16,9 @@ const int LABEL_LENGTH  = 50;
 
 const int OFFSET_MAX_LEN = 50;
 
+const int TREE_ALLOC_MARKS_NUM = 20;         // конечная вместимость labels (START_DATATREE_SIZE)^20  минимум равна 2^20 = 1 048 576
+
+
 enum SonDir_t
 {
     LEFT,
@@ -35,13 +38,21 @@ struct node_t
     ON_TREE_DEBUG(char name[NODE_NAME_LEN]);
 };
 
+struct tree_alloc_marks_t
+{
+    node_t *data[TREE_ALLOC_MARKS_NUM];
+    int   size;
+};
+
 struct tree_t
 {
     node_t **node_ptrs;
     node_t *root_ptr;
 
     int capacity;
-    int size; 
+    int size;
+
+    tree_alloc_marks_t alloc_marks;
 
     ON_TREE_DEBUG(
         FILE *logfile;

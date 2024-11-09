@@ -4,7 +4,6 @@
 
 #include "akinator.h"
 
-char MANAGER_LABEL[LABEL_LENGTH] = "XZ chto";
 
 int main(const int argc, const char **argv)
 {
@@ -15,9 +14,6 @@ int main(const int argc, const char **argv)
     TreeCtor(&tree, START_DATATREE_SIZE);    
 
     GetTreeFromFile(&tree, &labels, GetSavefileName(argc, argv));
-
-    // node_t *manager = TreeAddLeaf(&tree, tree.root_ptr, ROOTPTR_OWN_DIR);
-    // manager->data   = AddToLabels(MANAGER_LABEL, &labels);
 
     AkinatorRun(&tree, &labels);
 
