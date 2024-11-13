@@ -3,15 +3,9 @@
       { 'jfjfjf'
          { 'no'
             { 'lk'
-               { 'l'
-                  { 'XZ chto'
-                     { 'PTR#' }
-                     { 'PTR#' }
-                  }
-                  { 'l'
-                     { 'PTR#' }
-                     { 'PTR#' }
-                  }
+               { 'XZ chto'
+                  { 'PTR#' }
+                  { 'PTR#' }
                }
                { 'p'
                   { 'PTR#' }

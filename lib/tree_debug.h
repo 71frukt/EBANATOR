@@ -1,6 +1,9 @@
 #ifndef TREE_DEBUG_H
 #define TREE_DEBUG_H
 
+#include <stdio.h>
+#include "tree.h"
+
 #define LOGS_FOLDER      "logs/"
 #define GRAPH_FOLDER     "graphs/"
 
@@ -34,5 +37,12 @@ enum TreeError_t
 const int PATH_NAME_LEN   = 100;
 const int CMD_COMMAND_LEN = 100;
 
+void  TreeAssert   (tree_t *tree, const char *file, int line, const char *func);
+int   TreeVerify   (tree_t *tree);
+void  TreeDump     (tree_t *tree, const char *file, int line, const char *func);
+void  PrintTreeErr (int error);
+char *GetFilePath  (const char *name, const char *folder, char *path);
+FILE *OpenLogFile  ();
+void  CloseLogFile ();
 
 #endif

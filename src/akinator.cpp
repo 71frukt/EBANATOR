@@ -6,12 +6,12 @@
 #include "akinator.h"
 #include "user_interaction.h"
 #include "tree.h"
+#include "tree_debug.h"
 
 void AkinatorRun(tree_t *tree, labels_t *labels)
 {
     TREE_ASSERT(tree);
     assert(labels);
-
 
     while (true)
     {
@@ -70,7 +70,7 @@ void LabelsRecalloc(labels_t *labels, int new_capacity)
     }
 }
 
-char *AddToLabels(char *got_str, labels_t *labels)
+char *AddToLabels(const char *got_str, labels_t *labels)
 {
     assert(got_str);
     assert(labels);
@@ -95,63 +95,62 @@ GameStatus_t AskQuestion(node_t *cur_node, tree_t *tree, labels_t *labels)
 
     printf("Is it " CHANGE_STR_COLOR("%s", YELLOW) "? (" CHANGE_STR_COLOR("%s", GREEN) "/" CHANGE_STR_COLOR("%s", GREEN) ")\n", cur_node->data, ANSWER_YES_MARK, ANSWER_NO_MARK);
 
-    SonDir_t dir = (GetAnswer() == ANSWER_YES ? RIGHT : LEFT);
+    SonDir_t answer = (GetYesNoAnswer() == ANSWER_YES ? RIGHT : LEFT);
 
     if (cur_node->left == NODE_PTR_POISON && cur_node->right == NODE_PTR_POISON)        // дошли до ответа
-    {
-        if (dir == RIGHT)                                                               // правильный ответ
-        {
-            printf("It is " CHANGE_STR_COLOR("%s", GREEN) "!\n", cur_node->data);
-            PrintHeroInfo(cur_node);
+        GuessHero(cur_node, tree, labels, answer);
 
-            return ResumeOrExit();
-        }
-
-        else                                                                            // не тот
-        {
-            node_t *comparing_node = TreePasteBetween(tree, cur_node->father, cur_node, LEFT);
-
-            node_t *new_node = TreeAddLeaf(tree, comparing_node, RIGHT);
-
-            printf("I have no ideas :(  Who is it? \n It is...  ");
-
-            GetInputLabel(new_node, labels);
-
-            printf("What is difference between " CHANGE_STR_COLOR("%s", YELLOW) " and " CHANGE_STR_COLOR("%s", YELLOW) "?\n " CHANGE_STR_COLOR("%s", CYAN)  " is...  ",
-                                                 cur_node->data, new_node->data, new_node->data);
-                                                 
-            GetInputLabel(comparing_node, labels);
-
-            printf("Ok! I'll take it into account next time\n");
-            PrintHeroInfo(new_node);
-
-            return ResumeOrExit();
-        }
-    }
-
-    else if (dir == LEFT && cur_node->left != NODE_PTR_POISON)
+    else if (answer == LEFT && cur_node->left != NODE_PTR_POISON)
         return AskQuestion(cur_node->left, tree, labels);
 
-    else if (dir == RIGHT && cur_node->right != NODE_PTR_POISON)
+    else if (answer == RIGHT && cur_node->right != NODE_PTR_POISON)
         return AskQuestion(cur_node->right, tree, labels);
 
     else                                                                                // такого элемента в базе данных нет
     {
         printf("I have no ideas :(  Who is it? \n It is... ");
 
-        node_t *new_node = TreeAddLeaf(tree, cur_node, dir);
+        node_t *new_node = TreeAddLeaf(tree, cur_node, answer);
         GetInputLabel(new_node, labels);
 
-        BindNodes(cur_node, new_node, dir);
+        BindNodes(cur_node, new_node, answer);
 
         printf("Ok! I'll take it into account next time\n");
         PrintHeroInfo(new_node);
-
-        return ResumeOrExit();
     }
+
+    return EndMenu(tree);
 
     TREE_ASSERT(tree);
     TREE_DUMP(tree);
+}
+
+void GuessHero(node_t *cur_node, tree_t *tree, labels_t *labels, SonDir_t user_answer)
+{
+    if (user_answer == RIGHT)                                                           // правильный ответ
+    {
+        printf("It is " CHANGE_STR_COLOR("%s", GREEN) "!\n", cur_node->data);
+        PrintHeroInfo(cur_node);
+    }
+
+    else                                                                                // не тот
+    {
+        node_t *comparing_node = TreePasteBetween(tree, cur_node->father, cur_node, LEFT);
+
+        node_t *new_node = TreeAddLeaf(tree, comparing_node, RIGHT);
+
+        printf("I have no ideas :(  Who is it? \n It is...  ");
+
+        GetInputLabel(new_node, labels);
+
+        printf("What is difference between " CHANGE_STR_COLOR("%s", YELLOW) " and " CHANGE_STR_COLOR("%s", YELLOW) "?\n " CHANGE_STR_COLOR("%s", CYAN)  " is...  ",
+                                                cur_node->data, new_node->data, new_node->data);
+                                                
+        GetInputLabel(comparing_node, labels);
+
+        printf("Ok! I'll take it into account next time\n");
+        PrintHeroInfo(new_node);
+    }
 }
 
 void PrintHeroInfo(node_t *hero)

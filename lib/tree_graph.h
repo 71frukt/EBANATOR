@@ -12,4 +12,9 @@
 
 const int GRAPH_IMG_WIDTH = 20;     // (%)
 
+void  DrawGraph(tree_t *tree, char *picture_path);
+void  InitNodesInDot   (tree_t *tree, FILE *dot_file);
+void  MakeLinksInDot   (tree_t *tree, FILE *dot_file);
+void  MakeGraphPicture (const char *dotfile_path, const char *picture_path);
+
 #endif

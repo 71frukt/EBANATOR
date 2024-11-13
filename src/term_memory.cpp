@@ -3,9 +3,9 @@
 #include <assert.h>
 
 #include "tree.h"
+#include "tree_debug.h"
 #include "akinator.h"
 
-char MANAGER_LABEL[LABEL_LENGTH] = "XZ chto";
 
 TreeFuncStatus SaveTreeInFile(tree_t *tree, const char *dest_file_name)
 {
@@ -104,8 +104,6 @@ TreeFuncStatus GetTreeFromFile(tree_t *tree, labels_t *labels, const char *input
         fseek(input_file, 0, SEEK_SET);
         tree->root_ptr = TreeGetNodeFamily(shadow_node, ROOTPTR_OWN_DIR, tree, labels, input_file);      // начиная с теневого узла
     }
-    
-
 
     fclose(input_file);
 

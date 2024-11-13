@@ -8,6 +8,8 @@
 #include "tree_debug.h"
 #include "tree_graph.h"
 
+extern int TreeError;
+
 TreeFuncStatus TreeCtor(tree_t *tree, int start_capacity)
 {
     assert(tree && "tree == nullptr in TreeCtor");
@@ -19,14 +21,6 @@ TreeFuncStatus TreeCtor(tree_t *tree, int start_capacity)
     TreeReacalloc(tree, start_capacity);
 
     InitNewNode(tree);          // init shadow_node
-
-    ON_TREE_DEBUG (
-        tree->logfile = OpenLogFile(LOGFILE_NAME);
-        assert(tree->logfile);
-
-        tree->drawn_graphs_num = 0;
-        tree->error = TREE_OK;
-    );
 
     TREE_ASSERT(tree);
     TREE_DUMP(tree);
@@ -46,16 +40,7 @@ TreeFuncStatus TreeDtor(tree_t *tree)
     tree->capacity = 0;
     tree->size     = 0;
 
-    ON_TREE_DEBUG (
-        fprintf(tree->logfile,    "\t\t</pre>     \n"
-                                  "\t</body       \n"
-                                  "</html>");
-        fclose(tree->logfile);
-
-        tree->error = 0;
-        tree->drawn_graphs_num = 0;
-        remove(TMP_DOTFILE_NAME);
-    );
+    ON_TREE_DEBUG ( remove(TMP_DOTFILE_NAME) );
 
     return TREE_FUNC_OK;
 }
@@ -100,7 +85,7 @@ node_t *TreeAddLeaf(tree_t *tree, node_t *father, SonDir_t son_dir)
      && (son_dir == RIGHT && father->right != NODE_PTR_POISON))
     {
         fprintf(stderr, "ERROR: attempt to bind a leaf to a occupied vertex\n");
-        tree->error |= TREE_NODES_LINK_ERR;
+        ON_TREE_DEBUG (TreeError |= TREE_NODES_LINK_ERR);
         son = NODE_PTR_POISON;
     }
 

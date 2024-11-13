@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #include "tree.h"
-
+#include "tree_debug.h"
 #include "akinator.h"
 
 
@@ -16,8 +16,6 @@ int main(const int argc, const char **argv)
     GetTreeFromFile(&tree, &labels, GetSavefileName(argc, argv));
 
     AkinatorRun(&tree, &labels);
-
-    SaveTreeInFile(&tree, GetSavefileName(argc, argv));
 
     TREE_DUMP(&tree);
 

@@ -3,9 +3,11 @@
 #include <assert.h>
 
 #include "tree.h"
+#include "tree_debug.h"
 #include "tree_graph.h"
 
-void DrawGraph(tree_t *tree)
+
+void DrawGraph(tree_t *tree, char *picture_path)
 {
     TREE_ASSERT(tree);
 
@@ -22,17 +24,9 @@ void DrawGraph(tree_t *tree)
 
     fclose(dot_file);
 
-    char picture_path[PATH_NAME_LEN] = {};
-    char picture_name[PATH_NAME_LEN] = {};
-    sprintf(picture_name, "%s%d.png", GRAPH_NAME_PREFIX, tree->drawn_graphs_num);
-
-    GetFilePath(picture_name, LOGS_FOLDER GRAPH_FOLDER, picture_path);
-
     MakeGraphPicture(TMP_DOTFILE_NAME, picture_path);
 
     fclose(dot_file);
-
-    tree->drawn_graphs_num++;
 }
 
 void InitNodesInDot(tree_t *tree, FILE *dot_file)
@@ -87,3 +81,5 @@ void MakeGraphPicture(const char *dotfile_path, const char *picture_path)
 // fprintf(stderr, "command: %s\n", cmd_command);
     system(cmd_command);
 }
+
+// );
