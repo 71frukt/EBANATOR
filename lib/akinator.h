@@ -14,6 +14,9 @@ const char *const ANSWER_NO_MARK  = "no";
 
 const char *const MANAGER_LABEL   = "XZ chto";
 
+const char *const SAVE_FILE_EXTENSION  = ".txt";
+const char *const IMAGE_FILE_EXTENSION = ".png";
+
 enum Answer_t
 {
     ANSWER_YES,
@@ -43,18 +46,18 @@ struct labels_t
 };
 
 
-void          AkinatorRun    (tree_t *tree, labels_t *labels);
-void          LabelsCtor     (labels_t *labels, int start_capacity);
-void          LabelsDtor     (labels_t *labels);
-void          LabelsRecalloc (labels_t *labels, int new_capacity);
-char         *AddToLabels    (const char *got_str, labels_t *labels);
-GameStatus_t  AskQuestion    (node_t *cur_node, tree_t *tree, labels_t *labels);
-void          PrintHeroInfo  (node_t *hero);
-void          GuessHero      (node_t *cur_node, tree_t *tree, labels_t *labels, SonDir_t user_answer);
+void  AkinatorRun    (tree_t *tree, labels_t *labels);
+void  LabelsCtor     (labels_t *labels, int start_capacity);
+void  LabelsDtor     (labels_t *labels);
+void  LabelsRecalloc (labels_t *labels, int new_capacity);
+char *AddToLabels    (const char *got_str, labels_t *labels);
+void  AskQuestion    (node_t *cur_node, tree_t *tree, labels_t *labels);
+void  PrintHeroInfo  (node_t *hero);
+void  GuessHero      (node_t *cur_node, tree_t *tree, labels_t *labels, SonDir_t user_answer);
 
 char         *GetInputLabel  (node_t *node, labels_t *labels);
 Answer_t      GetYesNoAnswer ();
-GameStatus_t  EndMenu        (tree_t *tree);
+GameStatus_t  GameMenu        (tree_t *tree);
 
 const char     *GetSavefileName     (const int argc, const char **argv);
 TreeFuncStatus  SaveTreeInFile      (tree_t *tree, const char *dest_file_name);

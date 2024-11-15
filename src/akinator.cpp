@@ -13,12 +13,10 @@ void AkinatorRun(tree_t *tree, labels_t *labels)
     TREE_ASSERT(tree);
     assert(labels);
 
-    while (true)
+    while (GameMenu(tree) == GAME_RESUME)
     {
         TREE_DUMP(tree);
-
-        if (AskQuestion(tree->root_ptr, tree, labels) == GAME_EXIT)
-            break;
+        AskQuestion(tree->root_ptr, tree, labels);
     }
 
     TREE_ASSERT(tree);
@@ -87,7 +85,7 @@ char *AddToLabels(const char *got_str, labels_t *labels)
     return res_str;
 }
 
-GameStatus_t AskQuestion(node_t *cur_node, tree_t *tree, labels_t *labels)
+void AskQuestion(node_t *cur_node, tree_t *tree, labels_t *labels)
 {
     TREE_ASSERT(tree);
     assert(cur_node);
@@ -101,10 +99,10 @@ GameStatus_t AskQuestion(node_t *cur_node, tree_t *tree, labels_t *labels)
         GuessHero(cur_node, tree, labels, answer);
 
     else if (answer == LEFT && cur_node->left != NODE_PTR_POISON)
-        return AskQuestion(cur_node->left, tree, labels);
+        AskQuestion(cur_node->left, tree, labels);
 
     else if (answer == RIGHT && cur_node->right != NODE_PTR_POISON)
-        return AskQuestion(cur_node->right, tree, labels);
+        AskQuestion(cur_node->right, tree, labels);
 
     else                                                                                // такого элемента в базе данных нет
     {
@@ -118,8 +116,6 @@ GameStatus_t AskQuestion(node_t *cur_node, tree_t *tree, labels_t *labels)
         printf("Ok! I'll take it into account next time\n");
         PrintHeroInfo(new_node);
     }
-
-    return EndMenu(tree);
 
     TREE_ASSERT(tree);
     TREE_DUMP(tree);

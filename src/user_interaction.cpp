@@ -57,14 +57,14 @@ Answer_t GetYesNoAnswer()
     }
 }
 
-GameStatus_t EndMenu(tree_t *tree)
+GameStatus_t GameMenu(tree_t *tree)
 {
     // printf("\nDo you want to restart the game? (" CHANGE_STR_COLOR("%s", GREEN) "/" CHANGE_STR_COLOR("%s", GREEN) "):\n", ANSWER_YES_MARK, ANSWER_NO_MARK);
 
     while (true)
     {
         printf("\nWhat do you want to do next?\n" 
-                CHANGE_STR_COLOR("1:", GREEN) "restart the game  \n" 
+                CHANGE_STR_COLOR("1:", GREEN) "start new game  \n" 
                 CHANGE_STR_COLOR("2:", GREEN) "save result data  \n"
                 CHANGE_STR_COLOR("3:", GREEN) "draw result graph \n"
                 CHANGE_STR_COLOR("4:", RED)   "exit              \n"
@@ -98,6 +98,8 @@ GameStatus_t EndMenu(tree_t *tree)
                     scanf("%[^\n]%*c", save_file_name); 
                 );
 
+                strcat(save_file_name, SAVE_FILE_EXTENSION);
+
                 SaveTreeInFile(tree, save_file_name);
                 break;
             }
@@ -111,6 +113,8 @@ GameStatus_t EndMenu(tree_t *tree)
                 CHANGE_INDENT_COLOR (CYAN, 
                     scanf("%[^\n]%*c", image_file_name); 
                 );
+
+                strcat(image_file_name, IMAGE_FILE_EXTENSION);
 
                 DrawGraph(tree, image_file_name);
                 break;         
@@ -129,5 +133,4 @@ GameStatus_t EndMenu(tree_t *tree)
             }
         }
     }   
-}           // TODO: Сохранить или не сохранить базу данных
-            // опция рисовать граф
+}

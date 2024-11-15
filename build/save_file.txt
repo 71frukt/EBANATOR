@@ -1,45 +1,15 @@
-{ 'popaoaoao'
-   { 'no'
-      { 'jfjfjf'
-         { 'no'
-            { 'lk'
-               { 'l'
-                  { 'XZ chto'
-                     { 'PTR#' }
-                     { 'PTR#' }
-                  }
-                  { 'l'
-                     { 'PTR#' }
-                     { 'PTR#' }
-                  }
-               }
-               { 'p'
-                  { 'PTR#' }
-                  { 'PTR#' }
-               }
-            }
-            { 'no'
-               { 'PTR#' }
-               { 'PTR#' }
-            }
-         }
-         { 'porniooo'
-            { 'PTR#' }
-            { 'PTR#' }
-         }
+{ 'pk'
+   { 'pa'
+      { 'XZ chto'
+         { 'PTR#' }
+         { 'PTR#' }
       }
-      { 'gio'
-         { 'no'
-            { 'PTR#' }
-            { 'PTR#' }
-         }
-         { 'popa ananasa'
-            { 'PTR#' }
-            { 'PTR#' }
-         }
+      { 'poap'
+         { 'PTR#' }
+         { 'PTR#' }
       }
    }
-   { 'popa'
+   { 'pkpk'
       { 'PTR#' }
       { 'PTR#' }
    }
