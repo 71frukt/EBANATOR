@@ -107,6 +107,8 @@ TreeFuncStatus GetTreeFromFile(tree_t *tree, labels_t *labels, const char *input
 
     fclose(input_file);
 
+    TREE_DUMP(tree);
+
     return TREE_FUNC_OK;   
 }
 

@@ -64,17 +64,18 @@ GameStatus_t GameMenu(tree_t *tree)
     while (true)
     {
         printf("\nWhat do you want to do next?\n" 
-                CHANGE_STR_COLOR("1:", GREEN) "start new game  \n" 
-                CHANGE_STR_COLOR("2:", GREEN) "save result data  \n"
-                CHANGE_STR_COLOR("3:", GREEN) "draw result graph \n"
-                CHANGE_STR_COLOR("4:", RED)   "exit              \n"
+                CHANGE_STR_COLOR("1:", GREEN) "start new game     \n" 
+                CHANGE_STR_COLOR("2:", GREEN) "save result data   \n"
+                CHANGE_STR_COLOR("3:", GREEN) "draw result graph  \n"
+                CHANGE_STR_COLOR("4:", GREEN) "compare two heroes \n"
+                CHANGE_STR_COLOR("5:", RED)   "exit               \n"
                 "... ");
         int answer = 0;
 
         CHANGE_INDENT_COLOR (CYAN, 
             if (scanf("%d%*c", &answer) == 0)
             {
-                printf(CHANGE_STR_COLOR("Incorrect input. ", RED) "Use " CHANGE_STR_COLOR("1 - 4", GREEN) ":\n");
+                printf(CHANGE_STR_COLOR("Incorrect input. ", RED) "Use " CHANGE_STR_COLOR("1 - 5", GREEN) ":\n");
                 scanf("%*[^\n]");      // съесть оставшуюся строку
                 continue;
             }          
@@ -98,7 +99,7 @@ GameStatus_t GameMenu(tree_t *tree)
                     scanf("%[^\n]%*c", save_file_name); 
                 );
 
-                strcat(save_file_name, SAVE_FILE_EXTENSION);
+                strncat(save_file_name, SAVE_FILE_EXTENSION, strlen(save_file_name) - strlen(SAVE_FILE_EXTENSION));
 
                 SaveTreeInFile(tree, save_file_name);
                 break;
@@ -114,13 +115,52 @@ GameStatus_t GameMenu(tree_t *tree)
                     scanf("%[^\n]%*c", image_file_name); 
                 );
 
-                strcat(image_file_name, IMAGE_FILE_EXTENSION);
+                strncat(image_file_name, IMAGE_FILE_EXTENSION, strlen(image_file_name) - strlen(IMAGE_FILE_EXTENSION));
 
                 DrawGraph(tree, image_file_name);
                 break;         
             }
 
             case 4:
+            {
+                char hero_1_name[ANSWER_LENGTH] = {};
+                char hero_2_name[ANSWER_LENGTH] = {};
+
+                printf("Write first hero name:\n");
+
+                CHANGE_INDENT_COLOR (CYAN, 
+                    scanf("%[^\n]%*c", hero_1_name); 
+                );
+
+                printf("Write second hero name:\n");
+
+                CHANGE_INDENT_COLOR (CYAN, 
+                    scanf("%[^\n]%*c", hero_2_name); 
+                );
+
+                node_t *hero_1 = FindHeroByName(tree, hero_1_name);
+                node_t *hero_2 = FindHeroByName(tree, hero_2_name);
+
+                if (hero_1 == NULL || hero_2 == NULL)
+                {
+                    if (hero_1 == NULL)
+                        printf("There is no hero named '%s'\n", hero_1_name);
+
+                    if (hero_2 == NULL)
+                        printf("There is no hero named '%s'\n", hero_2_name);
+
+                    return GameMenu(tree);
+                }
+
+                PrintHeroInfo(hero_1);
+                PrintHeroInfo(hero_2);
+                
+                CompareHeroes(hero_1, hero_2, tree);
+
+                break;
+            }
+
+            case 5:
             {
                 printf(CHANGE_STR_COLOR("\nGame over\n\n", MAGENTA));
                 return GAME_EXIT;
@@ -133,4 +173,6 @@ GameStatus_t GameMenu(tree_t *tree)
             }
         }
     }   
+
+    return GAME_RESUME;
 }

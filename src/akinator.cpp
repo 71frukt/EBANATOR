@@ -7,6 +7,7 @@
 #include "user_interaction.h"
 #include "tree.h"
 #include "tree_debug.h"
+#include "stack.h"
 
 void AkinatorRun(tree_t *tree, labels_t *labels)
 {
@@ -171,4 +172,138 @@ void PrintHeroInfo(node_t *hero)
     }
 
     printf("\n");
+}
+
+node_t *FindHeroByName(tree_t *tree, char *name)
+{
+    for (int i = 1; i < tree->size; i++)        // начиная с корня пропуская теневую ноду
+    {
+        node_t *cur_node = tree->node_ptrs[i];
+
+        if (strcmp(cur_node->data, name) == 0)
+        {
+            return cur_node;
+        }
+    }
+
+    return NULL;
+}
+
+void CompareHeroes(node_t *hero_1, node_t *hero_2, tree_t *tree)
+{
+    StackID path_1 = 0;
+    StackID path_2 = 0;
+
+    STACK_CTOR(&path_1, tree->size);
+    STACK_CTOR(&path_2, tree->size);
+
+    size_t node_1_path_len = PushPersonPath(path_1, tree, hero_1);
+    size_t node_2_path_len = PushPersonPath(path_2, tree, hero_2);
+
+    printf("\n'%s' and '%s' are similar in: ", hero_1->data, hero_2->data);
+
+    size_t counter_of_same = PushSamePath(path_1, path_2, tree, hero_1, hero_2, node_1_path_len, node_2_path_len);
+
+    // for (counter_of_same = 0; counter_of_same < node_1_path_len; counter_of_same++)
+    // {
+        // node_t *pathnode_1 = NULL;
+        // node_t *pathnode_2 = NULL;
+// 
+        // StackPop(path_1, &pathnode_1);
+        // StackPop(path_2, &pathnode_2);
+// 
+        // if (pathnode_1 == pathnode_2)
+        // {
+            // if (pathnode_1->own_dir == LEFT)
+                // printf("not ");
+// 
+            // printf("%s ", pathnode_1->father->data);
+        // }
+// 
+        // else 
+        // {
+            // StackPush(path_1, pathnode_1);
+            // StackPush(path_2, pathnode_2);
+            // break;   
+        // }
+    // }
+
+    printf("\nand different in: \n");
+    printf("'%s' is: ", hero_1->data);
+
+    PrintStackPath(path_1, node_1_path_len - counter_of_same);
+
+    printf("\n");
+    printf("'%s' is: ", hero_2->data);
+
+    PrintStackPath(path_2, node_2_path_len - counter_of_same);
+    printf("\n");
+
+    StackDtor(path_1);
+    StackDtor(path_2);
+}
+
+int PushSamePath(StackID path_1, StackID path_2, tree_t *tree, node_t *hero_1, node_t *hero_2, size_t max_path_len_1, size_t max_path_len_2)
+{
+    size_t counter_of_same = 0;
+
+    for (counter_of_same = 0; counter_of_same < max_path_len_1 && counter_of_same < max_path_len_2; counter_of_same++)
+    {
+        node_t *pathnode_1 = NULL;
+        node_t *pathnode_2 = NULL;
+
+        StackPop(path_1, &pathnode_1);
+        StackPop(path_2, &pathnode_2);
+
+        if (pathnode_1 == pathnode_2)
+        {
+            if (pathnode_1->own_dir == LEFT)
+                printf("not ");
+
+            printf("%s, ", pathnode_1->father->data);
+        }
+
+        else 
+        {
+            StackPush(path_1, pathnode_1);
+            StackPush(path_2, pathnode_2);
+            break;   
+        }
+    }
+
+    return counter_of_same;
+}
+
+int PushPersonPath(StackID stk, tree_t *tree, node_t *hero)
+{
+    node_t *cur_node = hero;
+    size_t path_len = 0;
+
+    while (cur_node != tree->root_ptr)
+    {
+        StackPush(stk, cur_node);
+        cur_node = cur_node->father;
+
+        path_len++;
+    }
+
+    return path_len;
+}
+
+void PrintStackPath(StackID path, size_t path_len)
+{
+    for (size_t i = 0; i < path_len; i++)
+    {
+        node_t *pathnode = NULL;
+
+        StackPop(path, &pathnode);
+
+        if (pathnode->own_dir == LEFT)
+            printf(" not");
+
+        printf(" %s", pathnode->father->data);
+
+        if (i + 1 < path_len)
+            printf(",");
+    }
 }

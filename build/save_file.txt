@@ -1,15 +1,21 @@
-{ 'pk'
-   { 'pa'
-      { 'XZ chto'
-         { 'PTR#' }
-         { 'PTR#' }
+{ 'big'
+   { 'fut'
+      { 'jim'
+         { 'XZ chto'
+            { 'PTR#' }
+            { 'PTR#' }
+         }
+         { 'hol'
+            { 'PTR#' }
+            { 'PTR#' }
+         }
       }
-      { 'poap'
+      { 'gol'
          { 'PTR#' }
          { 'PTR#' }
       }
    }
-   { 'pkpk'
+   { 'popa'
       { 'PTR#' }
       { 'PTR#' }
    }

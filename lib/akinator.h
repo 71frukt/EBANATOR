@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include "tree.h"
+#include "stack.h"
 
 const int START_DATATREE_SIZE = 200;
 const int ALLOC_MARKS_NUM     = 20;         // конечная вместимость labels (START_DATATREE_SIZE)^20  минимум равна 2^20 = 1 048 576
@@ -64,5 +65,10 @@ TreeFuncStatus  SaveTreeInFile      (tree_t *tree, const char *dest_file_name);
 TreeFuncStatus  TreePrintNodeFamily (node_t *node, FILE *dest_file);
 TreeFuncStatus  GetTreeFromFile     (tree_t *tree, labels_t *labels, const char *input_file_name);
 node_t         *TreeGetNodeFamily   (node_t *node, SonDir_t son_dir, tree_t *tree, labels_t *labels, FILE *input_file);
+node_t         *FindHeroByName      (tree_t *tree, char *name);
+void            CompareHeroes       (node_t *hero_1, node_t *hero_2, tree_t *tree);
+int             PushPersonPath      (StackID stk, tree_t *tree, node_t *hero);
+int             PushSamePath        (StackID path_1, StackID path_2, tree_t *tree, node_t *hero_1, node_t *hero_2, size_t max_path_len_1, size_t max_path_len_2);
+void            PrintStackPath      (StackID path, size_t path_len);
 
 #endif
